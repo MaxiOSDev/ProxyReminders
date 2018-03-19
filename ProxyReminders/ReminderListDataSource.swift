@@ -10,10 +10,19 @@ import Foundation
 import UIKit
 import CoreData
 
+protocol ReminderCellDelegate: AnyObject {
+    func buttonCloseTapped(cell: ReminderCell)
+}
+
+protocol SegueDelegate {
+    func callSegueFromCell(myData dataObject: AnyObject)
+}
+
 class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     let tableView: UITableView
     let context: NSManagedObjectContext
     var indexPathForSelectedRow: IndexPath?
+    var delegate: SegueDelegate?
     
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: context, tableView: tableView)
@@ -25,7 +34,7 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     }
     
     func reminderSelectedRow() -> IndexPath {
-        
+        print("Inside body of reminderSelectedRow function \(indexPathForSelectedRow)")
         return indexPathForSelectedRow!
     }
     
@@ -79,17 +88,41 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         return .delete
     }
     
+    func composeCellHelper() {
+        
+        let indexPath = IndexPath(row: 0, section: 1)
+        print("IndexPath here \(indexPath)")
+        
+        let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
+        
+        print("Cell? \(cell)")
+        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
+        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
+        reminder.text = text
+        context.saveChanges()
+    }
+    
     func configureCell(_ cell: ReminderCell, at indexPath: IndexPath) -> UITableViewCell {
         if let objects = fetchedResultsController.fetchedObjects {
             let reminder = objects[indexPath.row]
             cell.textView.text = reminder.text
             indexPathForSelectedRow = indexPath
+            cell.delegate = self
             return cell
         }
         
         return cell
     }
 
+}
+
+extension ReminderListDataSource: ReminderCellDelegate {
+    func buttonCloseTapped(cell: ReminderCell) {
+        let indexPath = self.tableView.indexPath(for: cell)
+        indexPathForSelectedRow = indexPath
+        //    print("Inside datasource \(indexPathForSelectedRow)")
+        delegate?.callSegueFromCell(myData: self)
+    }
 }
 
 

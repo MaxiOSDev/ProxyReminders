@@ -27,6 +27,7 @@ class RemindersListController: UITableViewController {
         super.viewDidLoad()
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
+        dataSource.delegate = self
         tableView.reloadData()
     }
 
@@ -47,7 +48,7 @@ class RemindersListController: UITableViewController {
     }
     
     @IBAction func composeReminder(_ sender: Any) {
-        let indexPath = IndexPath(row: 0, section: 0)
+        let indexPath = IndexPath(row: 0, section: 1)
         let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
         
         guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
@@ -57,11 +58,6 @@ class RemindersListController: UITableViewController {
         tableView.reloadData()
     }
     
-    
-    
-    @IBAction func addDetail(_ sender: Any) {
-     //   performSegue(withIdentifier: "composeDetail", sender: self)
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
@@ -83,6 +79,24 @@ class RemindersListController: UITableViewController {
             }
 
     }
-
-
 }
+
+extension RemindersListController: SegueDelegate {
+    func callSegueFromCell(myData dataObject: AnyObject) {
+        self.performSegue(withIdentifier: "showDetail", sender: dataObject)
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -36,7 +36,6 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nwk-La-tZp">
                                             <rect key="frame" x="345" y="8" width="22" height="27.5"/>
                                             <connections>
-                                                <action selector="addDetail:" destination="Tqr-Wd-oIn" eventType="touchUpInside" id="fBN-qe-WsT"/>
                                                 <segue destination="Uug-R3-z2c" kind="presentation" identifier="composeDetail" id="jEv-x5-gEl"/>
                                             </connections>
                                         </button>
@@ -73,7 +72,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="114.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J15-bm-JvP" customClass="UIButtonX" customModule="ProximityReminders" customModuleProvider="target">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J15-bm-JvP" customClass="UIButtonX" customModule="ProxyReminders" customModuleProvider="target">
                                             <rect key="frame" x="8" y="9" width="30" height="30.5"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -99,7 +98,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09j-5h-LQE">
                                                     <rect key="frame" x="23.5" y="46" width="22" height="22"/>
                                                     <connections>
-                                                        <segue destination="Uug-R3-z2c" kind="presentation" identifier="showDetail" id="5BX-uG-B2Z"/>
+                                                        <action selector="reminderDetail:" destination="dGK-iA-JJe" eventType="touchUpInside" id="g9l-Dk-yWC"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -165,6 +164,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="yhF-Xe-6VR" id="THZ-ov-SxK"/>
+                        <segue destination="Uug-R3-z2c" kind="presentation" identifier="showDetail" id="Rk5-mG-WhS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UZt-kO-XGb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -192,7 +192,7 @@
         <!--Details-->
         <scene sceneID="LX8-uV-NwF">
             <objects>
-                <tableViewController id="MwT-5t-Jnw" customClass="ReminderDetailController" customModule="ProximityReminders" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="MwT-5t-Jnw" customClass="ReminderDetailController" customModule="ProxyReminders" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="gRy-TC-Wz4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -318,7 +318,7 @@
         <!--Location-->
         <scene sceneID="Q8Q-Qk-iYF">
             <objects>
-                <viewController storyboardIdentifier="LocationContoller" title="Location" id="ir2-lu-mLn" customClass="LocationController" customModule="ProximityReminders" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationContoller" title="Location" id="ir2-lu-mLn" customClass="LocationController" customModule="ProxyReminders" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vLj-ZS-8Xp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -449,6 +449,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="jEv-x5-gEl"/>
+        <segue reference="Rk5-mG-WhS"/>
     </inferredMetricsTieBreakers>
 </document>

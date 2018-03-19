@@ -15,6 +15,7 @@ class ReminderCell: UITableViewCell {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
+    weak var delegate: ReminderCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,5 +27,10 @@ class ReminderCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
     }
+    
+    @IBAction func reminderDetail(_ sender: UIButton) {
+        delegate?.buttonCloseTapped(cell: self)
+    }
+    
 
 }
