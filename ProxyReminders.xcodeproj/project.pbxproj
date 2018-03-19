@@ -1,0 +1,412 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FB325D1020601D8F0089C664 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D0F20601D8F0089C664 /* AppDelegate.swift */; };
+		FB325D1520601D8F0089C664 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB325D1320601D8F0089C664 /* Main.storyboard */; };
+		FB325D1820601D8F0089C664 /* ProxyReminders.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB325D1620601D8F0089C664 /* ProxyReminders.xcdatamodeld */; };
+		FB325D1A20601D8F0089C664 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB325D1920601D8F0089C664 /* Assets.xcassets */; };
+		FB325D1D20601D8F0089C664 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FB325D1B20601D8F0089C664 /* LaunchScreen.storyboard */; };
+		FB325D2620601DA70089C664 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB325D2520601DA70089C664 /* MapKit.framework */; };
+		FB325D2820601E3A0089C664 /* RemindersListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D2720601E3A0089C664 /* RemindersListController.swift */; };
+		FB325D2A20601EAB0089C664 /* ReminderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D2920601EAB0089C664 /* ReminderCell.swift */; };
+		FB325D2C20601EFE0089C664 /* UIImageX.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D2B20601EFE0089C664 /* UIImageX.swift */; };
+		FB325D2E20601F0B0089C664 /* UIButtonX.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D2D20601F0B0089C664 /* UIButtonX.swift */; };
+		FB325D30206028780089C664 /* ReminderDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D2F206028780089C664 /* ReminderDetailController.swift */; };
+		FB325D3220602A250089C664 /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3120602A250089C664 /* LocationController.swift */; };
+		FB325D3420602A630089C664 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3320602A630089C664 /* LocationCell.swift */; };
+		FB325D3620602C530089C664 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3520602C530089C664 /* CoreDataStack.swift */; };
+		FB325D3820602C9B0089C664 /* CDReminderProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3720602C9B0089C664 /* CDReminderProperties.swift */; };
+		FB325D3A20602CC10089C664 /* ReminderFetchedResultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3920602CC10089C664 /* ReminderFetchedResultsController.swift */; };
+		FB325D3C20602DD00089C664 /* ReminderListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */; };
+		FB325D3E206034A20089C664 /* LocationListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3D206034A20089C664 /* LocationListDataSource.swift */; };
+		FB325D4020603B660089C664 /* ComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3F20603B660089C664 /* ComposeCell.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FB325D0C20601D8F0089C664 /* ProxyReminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProxyReminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB325D0F20601D8F0089C664 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FB325D1420601D8F0089C664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FB325D1720601D8F0089C664 /* ProxyReminders.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProxyReminders.xcdatamodel; sourceTree = "<group>"; };
+		FB325D1920601D8F0089C664 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB325D1C20601D8F0089C664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FB325D1E20601D8F0089C664 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB325D2520601DA70089C664 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		FB325D2720601E3A0089C664 /* RemindersListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersListController.swift; sourceTree = "<group>"; };
+		FB325D2920601EAB0089C664 /* ReminderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCell.swift; sourceTree = "<group>"; };
+		FB325D2B20601EFE0089C664 /* UIImageX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageX.swift; sourceTree = "<group>"; };
+		FB325D2D20601F0B0089C664 /* UIButtonX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonX.swift; sourceTree = "<group>"; };
+		FB325D2F206028780089C664 /* ReminderDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailController.swift; sourceTree = "<group>"; };
+		FB325D3120602A250089C664 /* LocationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
+		FB325D3320602A630089C664 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
+		FB325D3520602C530089C664 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		FB325D3720602C9B0089C664 /* CDReminderProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDReminderProperties.swift; sourceTree = "<group>"; };
+		FB325D3920602CC10089C664 /* ReminderFetchedResultsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderFetchedResultsController.swift; sourceTree = "<group>"; };
+		FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListDataSource.swift; sourceTree = "<group>"; };
+		FB325D3D206034A20089C664 /* LocationListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListDataSource.swift; sourceTree = "<group>"; };
+		FB325D3F20603B660089C664 /* ComposeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FB325D0920601D8F0089C664 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB325D2620601DA70089C664 /* MapKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FB325D0320601D8F0089C664 = {
+			isa = PBXGroup;
+			children = (
+				FB325D0E20601D8F0089C664 /* ProxyReminders */,
+				FB325D0D20601D8F0089C664 /* Products */,
+				FB325D2420601DA70089C664 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		FB325D0D20601D8F0089C664 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D0C20601D8F0089C664 /* ProxyReminders.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB325D0E20601D8F0089C664 /* ProxyReminders */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D0F20601D8F0089C664 /* AppDelegate.swift */,
+				FB325D1320601D8F0089C664 /* Main.storyboard */,
+				FB325D1920601D8F0089C664 /* Assets.xcassets */,
+				FB325D1B20601D8F0089C664 /* LaunchScreen.storyboard */,
+				FB325D1E20601D8F0089C664 /* Info.plist */,
+				FB325D1620601D8F0089C664 /* ProxyReminders.xcdatamodeld */,
+				FB325D2720601E3A0089C664 /* RemindersListController.swift */,
+				FB325D2920601EAB0089C664 /* ReminderCell.swift */,
+				FB325D2B20601EFE0089C664 /* UIImageX.swift */,
+				FB325D2D20601F0B0089C664 /* UIButtonX.swift */,
+				FB325D2F206028780089C664 /* ReminderDetailController.swift */,
+				FB325D3120602A250089C664 /* LocationController.swift */,
+				FB325D3320602A630089C664 /* LocationCell.swift */,
+				FB325D3520602C530089C664 /* CoreDataStack.swift */,
+				FB325D3720602C9B0089C664 /* CDReminderProperties.swift */,
+				FB325D3920602CC10089C664 /* ReminderFetchedResultsController.swift */,
+				FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */,
+				FB325D3D206034A20089C664 /* LocationListDataSource.swift */,
+				FB325D3F20603B660089C664 /* ComposeCell.swift */,
+			);
+			path = ProxyReminders;
+			sourceTree = "<group>";
+		};
+		FB325D2420601DA70089C664 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D2520601DA70089C664 /* MapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FB325D0B20601D8F0089C664 /* ProxyReminders */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB325D2120601D8F0089C664 /* Build configuration list for PBXNativeTarget "ProxyReminders" */;
+			buildPhases = (
+				FB325D0820601D8F0089C664 /* Sources */,
+				FB325D0920601D8F0089C664 /* Frameworks */,
+				FB325D0A20601D8F0089C664 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ProxyReminders;
+			productName = ProxyReminders;
+			productReference = FB325D0C20601D8F0089C664 /* ProxyReminders.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FB325D0420601D8F0089C664 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Max Ramirez";
+				TargetAttributes = {
+					FB325D0B20601D8F0089C664 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = FB325D0720601D8F0089C664 /* Build configuration list for PBXProject "ProxyReminders" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FB325D0320601D8F0089C664;
+			productRefGroup = FB325D0D20601D8F0089C664 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FB325D0B20601D8F0089C664 /* ProxyReminders */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FB325D0A20601D8F0089C664 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB325D1D20601D8F0089C664 /* LaunchScreen.storyboard in Resources */,
+				FB325D1A20601D8F0089C664 /* Assets.xcassets in Resources */,
+				FB325D1520601D8F0089C664 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FB325D0820601D8F0089C664 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB325D3220602A250089C664 /* LocationController.swift in Sources */,
+				FB325D1820601D8F0089C664 /* ProxyReminders.xcdatamodeld in Sources */,
+				FB325D4020603B660089C664 /* ComposeCell.swift in Sources */,
+				FB325D3C20602DD00089C664 /* ReminderListDataSource.swift in Sources */,
+				FB325D1020601D8F0089C664 /* AppDelegate.swift in Sources */,
+				FB325D2E20601F0B0089C664 /* UIButtonX.swift in Sources */,
+				FB325D3A20602CC10089C664 /* ReminderFetchedResultsController.swift in Sources */,
+				FB325D30206028780089C664 /* ReminderDetailController.swift in Sources */,
+				FB325D3620602C530089C664 /* CoreDataStack.swift in Sources */,
+				FB325D2C20601EFE0089C664 /* UIImageX.swift in Sources */,
+				FB325D3E206034A20089C664 /* LocationListDataSource.swift in Sources */,
+				FB325D3420602A630089C664 /* LocationCell.swift in Sources */,
+				FB325D3820602C9B0089C664 /* CDReminderProperties.swift in Sources */,
+				FB325D2820601E3A0089C664 /* RemindersListController.swift in Sources */,
+				FB325D2A20601EAB0089C664 /* ReminderCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FB325D1320601D8F0089C664 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB325D1420601D8F0089C664 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		FB325D1B20601D8F0089C664 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FB325D1C20601D8F0089C664 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FB325D1F20601D8F0089C664 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FB325D2020601D8F0089C664 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FB325D2220601D8F0089C664 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KEAH2TY547;
+				INFOPLIST_FILE = ProxyReminders/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ramirezmax.ProxyReminders;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FB325D2320601D8F0089C664 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KEAH2TY547;
+				INFOPLIST_FILE = ProxyReminders/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ramirezmax.ProxyReminders;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FB325D0720601D8F0089C664 /* Build configuration list for PBXProject "ProxyReminders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB325D1F20601D8F0089C664 /* Debug */,
+				FB325D2020601D8F0089C664 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB325D2120601D8F0089C664 /* Build configuration list for PBXNativeTarget "ProxyReminders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB325D2220601D8F0089C664 /* Debug */,
+				FB325D2320601D8F0089C664 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FB325D1620601D8F0089C664 /* ProxyReminders.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FB325D1720601D8F0089C664 /* ProxyReminders.xcdatamodel */,
+			);
+			currentVersion = FB325D1720601D8F0089C664 /* ProxyReminders.xcdatamodel */;
+			path = ProxyReminders.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = FB325D0420601D8F0089C664 /* Project object */;
+}
