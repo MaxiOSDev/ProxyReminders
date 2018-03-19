@@ -76,8 +76,8 @@ class RemindersListController: UITableViewController {
                     let indexPath = IndexPath(row: 0, section: 1)
                     let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
                     detailPage.context = self.context
-                    print(cell.textView.text)
-                    detailPage.textView.text = cell.textView.text
+                    detailPage.textViewText = cell.textView.text
+            
                 }
 
             }

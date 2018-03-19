@@ -29,7 +29,7 @@ class ReminderDetailController: UITableViewController {
     var identifier: String?
     var radius: Double?
     var location: String?
-
+    var textViewText: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,6 +90,8 @@ class ReminderDetailController: UITableViewController {
                     
                 }
             }
+        } else {
+            textView.text = textViewText
         }
     }
     
