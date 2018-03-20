@@ -26,6 +26,7 @@
 		FB325D3C20602DD00089C664 /* ReminderListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */; };
 		FB325D3E206034A20089C664 /* LocationListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3D206034A20089C664 /* LocationListDataSource.swift */; };
 		FB325D4020603B660089C664 /* ComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3F20603B660089C664 /* ComposeCell.swift */; };
+		FB9AF9EE20613D6D0077CC5D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListDataSource.swift; sourceTree = "<group>"; };
 		FB325D3D206034A20089C664 /* LocationListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListDataSource.swift; sourceTree = "<group>"; };
 		FB325D3F20603B660089C664 /* ComposeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
+		FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,25 +86,15 @@
 		FB325D0E20601D8F0089C664 /* ProxyReminders */ = {
 			isa = PBXGroup;
 			children = (
-				FB325D0F20601D8F0089C664 /* AppDelegate.swift */,
+				FB9AF9EB206139340077CC5D /* Support Files */,
+				FB9AF9EA2061392C0077CC5D /* Model */,
+				FB9AF9E9206139210077CC5D /* Views */,
+				FB9AF9E8206139170077CC5D /* Controller */,
 				FB325D1320601D8F0089C664 /* Main.storyboard */,
 				FB325D1920601D8F0089C664 /* Assets.xcassets */,
 				FB325D1B20601D8F0089C664 /* LaunchScreen.storyboard */,
 				FB325D1E20601D8F0089C664 /* Info.plist */,
 				FB325D1620601D8F0089C664 /* ProxyReminders.xcdatamodeld */,
-				FB325D2720601E3A0089C664 /* RemindersListController.swift */,
-				FB325D2920601EAB0089C664 /* ReminderCell.swift */,
-				FB325D2B20601EFE0089C664 /* UIImageX.swift */,
-				FB325D2D20601F0B0089C664 /* UIButtonX.swift */,
-				FB325D2F206028780089C664 /* ReminderDetailController.swift */,
-				FB325D3120602A250089C664 /* LocationController.swift */,
-				FB325D3320602A630089C664 /* LocationCell.swift */,
-				FB325D3520602C530089C664 /* CoreDataStack.swift */,
-				FB325D3720602C9B0089C664 /* CDReminderProperties.swift */,
-				FB325D3920602CC10089C664 /* ReminderFetchedResultsController.swift */,
-				FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */,
-				FB325D3D206034A20089C664 /* LocationListDataSource.swift */,
-				FB325D3F20603B660089C664 /* ComposeCell.swift */,
 			);
 			path = ProxyReminders;
 			sourceTree = "<group>";
@@ -113,6 +105,57 @@
 				FB325D2520601DA70089C664 /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FB9AF9E8206139170077CC5D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D2720601E3A0089C664 /* RemindersListController.swift */,
+				FB325D2F206028780089C664 /* ReminderDetailController.swift */,
+				FB325D3120602A250089C664 /* LocationController.swift */,
+				FB325D3920602CC10089C664 /* ReminderFetchedResultsController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		FB9AF9E9206139210077CC5D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D2920601EAB0089C664 /* ReminderCell.swift */,
+				FB325D3F20603B660089C664 /* ComposeCell.swift */,
+				FB325D3320602A630089C664 /* LocationCell.swift */,
+				FB325D2B20601EFE0089C664 /* UIImageX.swift */,
+				FB325D2D20601F0B0089C664 /* UIButtonX.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FB9AF9EA2061392C0077CC5D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FB9AF9EC20613D5A0077CC5D /* LocationGroup */,
+				FB325D3520602C530089C664 /* CoreDataStack.swift */,
+				FB325D3720602C9B0089C664 /* CDReminderProperties.swift */,
+				FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */,
+				FB325D3D206034A20089C664 /* LocationListDataSource.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		FB9AF9EB206139340077CC5D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D0F20601D8F0089C664 /* AppDelegate.swift */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		FB9AF9EC20613D5A0077CC5D /* LocationGroup */ = {
+			isa = PBXGroup;
+			children = (
+				FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */,
+			);
+			path = LocationGroup;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,6 +242,7 @@
 				FB325D1820601D8F0089C664 /* ProxyReminders.xcdatamodeld in Sources */,
 				FB325D4020603B660089C664 /* ComposeCell.swift in Sources */,
 				FB325D3C20602DD00089C664 /* ReminderListDataSource.swift in Sources */,
+				FB9AF9EE20613D6D0077CC5D /* LocationManager.swift in Sources */,
 				FB325D1020601D8F0089C664 /* AppDelegate.swift in Sources */,
 				FB325D2E20601F0B0089C664 /* UIButtonX.swift in Sources */,
 				FB325D3A20602CC10089C664 /* ReminderFetchedResultsController.swift in Sources */,

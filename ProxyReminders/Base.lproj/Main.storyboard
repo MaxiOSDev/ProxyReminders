@@ -387,7 +387,7 @@
                                             <segment title="When I Leave"/>
                                         </segments>
                                         <connections>
-                                            <action selector="reminderState:" destination="ir2-lu-mLn" eventType="valueChanged" id="T7v-u9-Lm9"/>
+                                            <action selector="setProximity:" destination="ir2-lu-mLn" eventType="valueChanged" id="pFf-cw-P2Q"/>
                                         </connections>
                                     </segmentedControl>
                                 </subviews>
@@ -418,11 +418,11 @@
                         <viewLayoutGuide key="safeArea" id="gNt-dc-CmK"/>
                     </view>
                     <connections>
-                        <outlet property="bottomMapView" destination="eSS-FA-FGS" id="hF3-Vx-UAT"/>
-                        <outlet property="locationSegmentedControl" destination="YaF-JO-Htn" id="qMx-ww-YRX"/>
-                        <outlet property="mapContainerView" destination="vhZ-Ia-ANz" id="dje-mE-fjo"/>
-                        <outlet property="mapView" destination="Qdk-Zu-6OT" id="KUw-pV-7Fg"/>
-                        <outlet property="tableView" destination="d3e-EE-Nqe" id="MF0-Ll-X4n"/>
+                        <outlet property="containerConstraint" destination="eSS-FA-FGS" id="3UG-CM-kyg"/>
+                        <outlet property="mapContainerView" destination="vhZ-Ia-ANz" id="0cz-O8-B7c"/>
+                        <outlet property="mapView" destination="Qdk-Zu-6OT" id="VnV-zO-1BS"/>
+                        <outlet property="segmentedControl" destination="YaF-JO-Htn" id="RWc-rQ-NSi"/>
+                        <outlet property="tableView" destination="d3e-EE-Nqe" id="gmo-KL-T4U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q7O-Cb-Stz" userLabel="First Responder" sceneMemberID="firstResponder"/>

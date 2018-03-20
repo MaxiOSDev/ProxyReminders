@@ -35,6 +35,7 @@ class RemindersListController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
     @IBAction func addReminder(_ sender: UIBarButtonItem) {
         let indexPath = IndexPath(row: 0, section: 0)
@@ -58,7 +59,7 @@ class RemindersListController: UITableViewController {
         tableView.reloadData()
     }
     
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
             if let navController = segue.destination as? UINavigationController {
