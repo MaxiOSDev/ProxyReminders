@@ -58,6 +58,8 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     weak var geoIdentifier: GeoIdentifierB?
     weak var reminderLocationDelegate: SavedReminderLocation?
     
+    let notificationCenter = UNUserNotificationCenter.current()
+    
     var eventType: EventType?
     var latitude: Double?
     var longitude: Double?

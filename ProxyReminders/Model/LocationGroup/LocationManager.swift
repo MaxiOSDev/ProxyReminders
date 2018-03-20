@@ -14,7 +14,8 @@ import UserNotifications
 
 protocol GeoNotificationDelegate: class {
     func showNotification(withTitle title: String, message: String)
-    func eventTypeStatus() -> EventType
+    func addLocationEvent(forReminder reminder: Reminder, forEvent type: EventType) -> UNLocationNotificationTrigger?
+    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?)
 }
 
 struct Coordinate {
@@ -152,10 +153,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate, MapMonitorDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Region Entered")
-        print(geoAlertDelegate?.eventTypeStatus())
-        if geoAlertDelegate?.eventTypeStatus() == .onEntry {
-            geoAlertDelegate?.showNotification(withTitle: "Entered Region", message: "You just entered the region you placed")
-        }
+
+        //    geoAlertDelegate?.showNotification(withTitle: "Entered Region", message: "You just entered the region you placed")
+
 
 
 
@@ -163,20 +163,49 @@ class LocationManager: NSObject, CLLocationManagerDelegate, MapMonitorDelegate {
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Region Exited")
-        print(geoAlertDelegate?.eventTypeStatus())
-        if geoAlertDelegate?.eventTypeStatus() == .onExit {
-            geoAlertDelegate?.showNotification(withTitle: "Exited Region", message: "You just exited the region you placed")
-        }
+
+         //   geoAlertDelegate?.showNotification(withTitle: "Exited Region", message: "You just exited the region you placed")
+        
 
 
 
     }
+    
+
 
 }
 
 extension LocationController: GeoNotificationDelegate {
-    func eventTypeStatus() -> EventType {
-        return EventType(rawValue: reminder!.eventType!)!
+    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
+        let text = reminder.text
+        guard let identifier = self.identifier else { return }
+        guard let notificationTrigger = trigger else { return }
+        
+        let content = UNMutableNotificationContent()
+        content.body = text
+        content.sound = .default()
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: notificationTrigger)
+        
+        notificationCenter.add(request)
+    }
+    
+    func addLocationEvent(forReminder reminder: Reminder, forEvent type: EventType) -> UNLocationNotificationTrigger? {
+        guard let latitude = self.latitude else { return nil }
+        guard let longitude = self.longitude else { return nil}
+        guard let regionIdentifier = identifier else { return nil }
+        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        let region = CLCircularRegion(center: center, radius: 50.00, identifier: regionIdentifier)
+        
+        switch type {
+        case .onEntry:
+            region.notifyOnExit = false
+            region.notifyOnEntry = true
+        case .onExit:
+            region.notifyOnExit = true
+            region.notifyOnEntry = true
+        }
+        
+        return UNLocationNotificationTrigger(region: region, repeats: false)
     }
     
     func showNotification(withTitle title: String, message: String) {
