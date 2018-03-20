@@ -14,8 +14,17 @@ enum EventType: String {
     case onExit = "On Exit"
 }
 
-class ReminderDetailController: UITableViewController {
-    
+protocol GeoReminderDelegate: class {
+    var latitude: Double? { get }
+    var longitude: Double? { get }
+    var eventType: EventType? { get }
+    var identifier: String? { get set }
+    var radius: Double? { get }
+    var location: String? { get }
+}
+
+class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
+
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationSwitch: UISwitch!
     @IBOutlet weak var locationNameLabel: UILabel!
@@ -23,6 +32,8 @@ class ReminderDetailController: UITableViewController {
     
     var context: NSManagedObjectContext?
     var reminder: Reminder?
+    var geoDelegate: GeoReminderDelegate?
+    
     var latitude: Double?
     var longitude: Double?
     var eventType: EventType?
@@ -31,6 +42,7 @@ class ReminderDetailController: UITableViewController {
     var location: String?
     var textViewText: String?
     
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,6 +50,7 @@ class ReminderDetailController: UITableViewController {
         tableView.tableFooterView = UIView(frame: .zero)
         print("Reminder \(reminder)")
         configureView()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,10 +75,29 @@ class ReminderDetailController: UITableViewController {
         } else {
             let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context!) as! Reminder
             reminder.text = text
+            reminder.location = location
+            reminder.identifier = identifier
+            reminder.latitude = latitude as! NSNumber
+            reminder.longitude = longitude as! NSNumber
+            reminder.radius = radius as! NSNumber
+            reminder.eventType = eventType?.rawValue
             context?.saveChanges()
         }
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    func dataSaved(latitude: Double?, longitude: Double?, eventType: EventType?, radius: Double?, location: String?) {
+        self.latitude = latitude
+        print("Called and here is the latitude \(latitude)")
+        self.longitude = longitude
+        self.eventType = eventType
+        self.radius = radius
+        self.location = location
+    }
+    
+    func saveIdentifier(identifier: String?) {
+        self.identifier = identifier
     }
     
     
@@ -118,7 +150,24 @@ class ReminderDetailController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showLocation" {
+            let locationVC = segue.destination as! LocationController
+            locationVC.geoSaveDelegate = self
+            locationVC.geoIdentifier = self
             
+            if let oldReminder = reminder {
+                if oldReminder.eventType != nil && reminder != nil {
+                    locationVC.eventType = EventType(rawValue: oldReminder.eventType!)
+                    locationVC.identifier = oldReminder.identifier
+                    locationVC.longitude = oldReminder.longitude as! Double
+                    locationVC.latitude = oldReminder.latitude as! Double
+                    locationVC.radius = oldReminder.radius as! Double
+                    locationVC.reminder = oldReminder
+
+                } else {
+                    
+                }
+
+            }
         }
     }
 

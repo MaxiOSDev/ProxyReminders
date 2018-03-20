@@ -10,6 +10,12 @@ import UIKit
 import Foundation
 import CoreLocation
 import MapKit
+import UserNotifications
+
+protocol GeoNotificationDelegate: class {
+    func showNotification(withTitle title: String, message: String)
+    func eventTypeStatus() -> EventType
+}
 
 struct Coordinate {
     let latitude: Double
@@ -39,13 +45,21 @@ protocol LocationManagerDelegate: class {
     func failedWithError(_ error: LocationError)
 }
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+protocol MapMonitorDelegate: class {
+    func startMonitoringCoordinates(_ coordinate: Coordinate)
+}
+
+class LocationManager: NSObject, CLLocationManagerDelegate, MapMonitorDelegate {
     private let manager = CLLocationManager()
     weak var permissionDelegate: LocationPermissionsDelegate?
     weak var locationManagerDelgate: LocationManagerDelegate?
+    weak var geoIdentifier: GeoIdentifierA?
+    weak var geoAlertDelegate: GeoNotificationDelegate?
+    var geoReminderDelegate: GeoReminderDelegate?
     var dataSource: LocationListDataSource?
     var map: MKMapView?
     var segmentedControl: UISegmentedControl?
+    
     
     init(delegate: LocationManagerDelegate?, permissionDelegate: LocationPermissionsDelegate?, map: MKMapView?) {
         self.locationManagerDelgate = delegate
@@ -106,6 +120,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
         let coordinate = Coordinate(location: location)
         let span = MKCoordinateSpanMake(0.05, 0.05)
+
         let region = MKCoordinateRegionMake(location.coordinate, span)
         map?.setRegion(region, animated: true)
         
@@ -117,6 +132,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func startMonitoringCoordinates(_ coordinate: Coordinate) {
         let circleRegionCoordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
         
+        let identifier = UUID().uuidString.description
+        print("Identifier within startMonitoring \(identifier)")
+        geoReminderDelegate?.identifier = identifier
+        geoIdentifier?.saveIdentifier(identifier: identifier)
         let circleRegion = CLCircularRegion(center: circleRegionCoordinate, radius: 50.00, identifier: "RandomIdentifier")
         self.map?.removeOverlays((map?.overlays)!)
         circleRegion.notifyOnEntry = true
@@ -133,16 +152,48 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Region Entered")
+        print(geoAlertDelegate?.eventTypeStatus())
+        if geoAlertDelegate?.eventTypeStatus() == .onEntry {
+            geoAlertDelegate?.showNotification(withTitle: "Entered Region", message: "You just entered the region you placed")
+        }
+
+
+
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Region Exited")
+        print(geoAlertDelegate?.eventTypeStatus())
+        if geoAlertDelegate?.eventTypeStatus() == .onExit {
+            geoAlertDelegate?.showNotification(withTitle: "Exited Region", message: "You just exited the region you placed")
+        }
+
+
+
     }
-    
-    
-    
+
 }
 
+extension LocationController: GeoNotificationDelegate {
+    func eventTypeStatus() -> EventType {
+        return EventType(rawValue: reminder!.eventType!)!
+    }
+    
+    func showNotification(withTitle title: String, message: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+        content.badge = 1
+        content.sound = .default()
+        let identifier = UUID().uuidString
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+        
+        let center = UNUserNotificationCenter.current()
+        center.add(request) { (error) in
+            
+        }
+    }
+}
 
 
 

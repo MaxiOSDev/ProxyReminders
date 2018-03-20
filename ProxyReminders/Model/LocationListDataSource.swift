@@ -19,7 +19,7 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     private let tableView: UITableView
     private let searchController: UISearchController
     var locationManager = CLLocationManager()
-    var mapView: MKMapView?
+    var mapView: MKMapView? = nil
     var selectedPin: MKPlacemark? = nil
     var userLocationPlacemark: CLPlacemark?
     var handleMapSearchDelegate: HandleMapSearch? = nil
@@ -28,12 +28,21 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     var inSearchMode: Bool? = false
     var delegate: MapViewDelegate?
     var container: UIView?
+    var circleRenderer: MKCircleRenderer!
+    weak var monitorDelegate: MapMonitorDelegate?
+    weak var geoSaveB: GeoSaveB?
+    var oldLatitude: Double?
+    var oldLongitude: Double? 
+    var reminder: Reminder?
     
-    init(tableView: UITableView, searchController: UISearchController, mapView: MKMapView, container: UIView?) {
+    var segmentedControl: UISegmentedControl!
+    
+    init(tableView: UITableView, searchController: UISearchController, mapView: MKMapView, container: UIView?, control: UISegmentedControl?) {
         self.tableView = tableView
         self.searchController = searchController
         self.mapView = mapView
         self.container = container
+        self.segmentedControl = control
         super.init()
         handleMapSearchDelegate = self
     }
@@ -87,6 +96,32 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
             cell.locationNameLabel.text = item.name
             cell.locationAddressLabel.text = parseAddress(selectedItem: item)
             return cell
+        } else {
+            if reminder?.eventType != nil {
+                let geoCoder = CLGeocoder()
+                let latitude: CLLocationDegrees = reminder?.latitude as! Double
+                let longitude: CLLocationDegrees = reminder?.longitude as! Double
+                
+                let location = CLLocation(latitude: latitude, longitude: longitude)
+                geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+                    var placemark: CLPlacemark!
+                    placemark = placemarks?[0]
+                    
+                    if let locationName = placemark.name {
+                        print(locationName)
+                    }
+                    
+                    let mkplacemark = MKPlacemark(placemark: placemark)
+                    cell.locationNameLabel.text = self.reminder?.location
+                    cell.locationAddressLabel.text = self.parseAddress(selectedItem: mkplacemark)
+                    self.delegate?.showMap(for: self.mapView!)
+                    self.dropPinZoomIn(placemark: mkplacemark)
+                    let coordinate = Coordinate(location: mkplacemark.location!)
+                    self.monitorDelegate?.startMonitoringCoordinates(coordinate)
+                    
+                }
+
+            }
         }
         
         return cell
@@ -134,7 +169,8 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
             annotation.subtitle = "\(city) \(state)"
         }
         mapView.addAnnotation(annotation)
-        let span = MKCoordinateSpanMake(0.05, 0.05)
+      //  let span = MKCoordinateSpanMake(0.05, 0.05)
+        let span = MKCoordinateSpanMake(0.003, 0.003)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
     }
@@ -149,17 +185,58 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         
         if matchingItems.count > 0 {
             let item = matchingItems[indexPath.row].placemark
-
+            let coordinate = Coordinate(location: item.location!)
+            monitorDelegate?.startMonitoringCoordinates(coordinate)
             handleMapSearchDelegate?.dropPinZoomIn(placemark: item)
+            geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location)
             searchController.isActive = false
+        } else {
+            if reminder?.eventType != nil {
+                let geoCoder = CLGeocoder()
+                let latitude: CLLocationDegrees = reminder?.latitude as! Double
+                let longitude: CLLocationDegrees = reminder?.longitude as! Double
+                
+                let location = CLLocation(latitude: latitude, longitude: longitude)
+                geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+                    var placemark: CLPlacemark!
+                    placemark = placemarks?[0]
+                    
+                    let mkplacemark = MKPlacemark(placemark: placemark)
+                    
+                    self.geoSaveB?.dataSaved(latitude: mkplacemark.coordinate.latitude, longitude: mkplacemark.coordinate.longitude, radius: 50.00, location: self.location)
+                }
+                
+            }
         }
         
         tableView.reloadData()
     }
     
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        guard let circleOverlay = overlay as? MKCircle else {
+            return MKOverlayRenderer()
+        }
+        
+        circleRenderer = MKCircleRenderer(circle: circleOverlay)
+        
+        if segmentedControl.selectedSegmentIndex == 0 {
+            circleRenderer.strokeColor = .blue
+            circleRenderer.lineWidth = 1.5
+            print("Line Width currently \(circleRenderer.lineWidth)")
+            circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.4)
+            
+        }
+        
+        return circleRenderer
+    }
+    
 }
 
-extension LocationListDataSource: LocationPermissionsDelegate, LocationManagerDelegate {
+extension LocationListDataSource: LocationPermissionsDelegate, LocationManagerDelegate, SavedReminderLocation {
+    func savedLocation(for reminder: Reminder?) {
+        self.reminder = reminder
+    }
+    
     func authorizationSucceeded() {
         print("Authorization Succeeded")
     }
