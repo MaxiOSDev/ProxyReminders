@@ -10,29 +10,33 @@ import UIKit
 import CoreData
 import UserNotifications
 
+// My Master View Controller
 class RemindersListController: UITableViewController {
     
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     var context = CoreDataStack().managedObjectContext
     
+    // Lazily loaded FetchedResultsController
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: self.context, tableView: tableView)
     }()
     
+    // Lazily loaded datasource
     lazy var dataSource: ReminderListDataSource = {
         return ReminderListDataSource(tableView: tableView, context: self.context)
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // As learnt in a blog
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            
+            // proper handling here
         }
-        
+        // Setting the datasource and delegate
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
+        
         dataSource.delegate = self
         tableView.reloadData()
     }
@@ -42,7 +46,7 @@ class RemindersListController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    // The adding of a reminder with the bar button item
     @IBAction func addReminder(_ sender: UIBarButtonItem) {
         let indexPath = IndexPath(row: 0, section: 0)
         let cell = tableView.cellForRow(at: indexPath) as! ReminderCell
@@ -54,6 +58,7 @@ class RemindersListController: UITableViewController {
         tableView.reloadData()
     }
     
+    // Compose of a reminder with the add button inside the compose cell
     @IBAction func composeReminder(_ sender: Any) {
         let indexPath = IndexPath(row: 0, section: 1)
         let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
@@ -65,7 +70,7 @@ class RemindersListController: UITableViewController {
         tableView.reloadData()
     }
     
-
+    // Send data to next view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
             if let navController = segue.destination as? UINavigationController {
@@ -75,6 +80,7 @@ class RemindersListController: UITableViewController {
                     detailPage.context = self.context
                     let reminder = self.dataSource.object(at: indexPath)
                     detailPage.reminder = reminder
+                    
                 } else if segue.identifier == "composeDetail" {
                     let indexPath = IndexPath(row: 0, section: 1)
                     let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
@@ -82,18 +88,15 @@ class RemindersListController: UITableViewController {
                     detailPage.textViewText = cell.textView.text
             
                 }
-
             }
-
     }
 }
 
+// Since I started over, I ran into lots of issues even as simple as using a segue, so got this from S.O.
 extension RemindersListController: SegueDelegate {
     func callSegueFromCell(myData dataObject: AnyObject) {
         self.performSegue(withIdentifier: "showDetail", sender: dataObject)
     }
-    
-    
 }
 
 

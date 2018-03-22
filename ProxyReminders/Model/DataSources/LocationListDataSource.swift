@@ -11,11 +11,14 @@ import CoreData
 import UIKit
 import MapKit
 
+// SO much happening here.
 class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
+    // Things that mean nothing but setup
     private let tableView: UITableView
     private let searchController: UISearchController
-    var locationManager = CLLocationManager()
     var mapView: MKMapView? = nil
+    
+    // Now this is the selected pin, and necessary stored propeties for my map view to work with the pin and location selected.
     var selectedPin: MKPlacemark? = nil
     var userLocationPlacemark: CLPlacemark?
     var handleMapSearchDelegate: HandleMapSearch? = nil
@@ -24,18 +27,15 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     var inSearchMode: Bool? = false
     var delegate: MapViewDelegate?
     var container: UIView?
-    var circleRenderer: MKCircleRenderer!
-  //  weak var monitorDelegate: MapMonitorDelegate?
+    var circleRenderer: MKCircleRenderer! // The circle renderer
     weak var monitorRegion: GeoRegionDelegate?
-    weak var geoIdentifier: GeoIdentifierA?
-    weak var geoSaveB: GeoSaveB?
+    weak var geoIdentifier: GeoIdentifierA? // The identifier
+    weak var geoSaveB: GeoSaveB? // Saving a bunch of propeties that is sent to LocationVC.
     var oldLatitude: Double?
-    var oldLongitude: Double? 
+    var oldLongitude: Double?
+    
     var reminder: Reminder?
-    
     var segmentedControl: UISegmentedControl!
-    
-    var notificationCenter = NotificationCenter()
     
     init(tableView: UITableView, searchController: UISearchController, mapView: MKMapView, container: UIView?, control: UISegmentedControl?) {
         self.tableView = tableView
@@ -65,6 +65,7 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         return configureCell(cell, at: indexPath)
     }
     
+    // Got it from stack overflow, very, and I mean very helpful for the address label
     func parseAddress(selectedItem: MKPlacemark) -> String {
         // put a space between "4" and "Melrose Place"
         let firstSpace = (selectedItem.subThoroughfare != nil && selectedItem.thoroughfare != nil) ? " " : ""
@@ -92,12 +93,15 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     func configureCell(_ cell: LocationCell, at indexPath: IndexPath) -> UITableViewCell {
         
         if matchingItems.count > 0 {
-            let item = matchingItems[indexPath.row].placemark
+            let item = matchingItems[indexPath.row].placemark // This crashes if you type too fast in the search bar. So type..Slow.
+            // Could fix it by using SHSearhBar (way better seach bar library I used for project 10) and not the search bar given to us by Apple
             cell.locationNameLabel.text = item.name
             cell.locationAddressLabel.text = parseAddress(selectedItem: item)
             return cell
         } else {
             if reminder?.eventType != nil {
+                
+                // Magic of getting that location
                 let geoCoder = CLGeocoder()
                 let latitude: CLLocationDegrees = reminder?.latitude as! Double
                 let longitude: CLLocationDegrees = reminder?.longitude as! Double
@@ -116,6 +120,7 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
                     cell.locationAddressLabel.text = self.parseAddress(selectedItem: mkplacemark)
                     self.delegate?.showMap(for: self.mapView!)
                     self.dropPinZoomIn(placemark: mkplacemark)
+                    // I used to start monitoring as soon as I would drop that pin. But I decided to start monitoring when the reminder is saved with a location.
                  //   let coordinate = Coordinate(location: mkplacemark.location!)
                  //   self.monitorDelegate?.startMonitoringCoordinates(coordinate)
                     
@@ -129,6 +134,7 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
 }
 
 extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchResultsUpdating, UISearchControllerDelegate {
+    // Update search bar results in table view with whatever I type in the search bar
     func updateSearchResults(for searchController: UISearchController) {
         guard let mapView = mapView else { return }
         guard let searchBarText = searchController.searchBar.text else { return }
@@ -155,6 +161,7 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         searchController.searchBar.showsCancelButton = false
     }
     
+    // Drop that pin in the mapview
     func dropPinZoomIn(placemark: MKPlacemark) {
         selectedPin = placemark
         
@@ -174,6 +181,7 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
         
+        // My region identifier is this! Also will end up being my reminder identifier
         let identifier = UUID().uuidString
         geoIdentifier?.saveIdentifier(identifier: identifier)
         let circleRegionCoordinate = CLLocationCoordinate2D(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
@@ -181,25 +189,25 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         // Send the circle region?
         // FIXME: - CircleRegionDelegate implementation
         monitorRegion?.monitorRegion(circleRegion)
-
+        // I am sending the region, not actually starting monitoring
         self.mapView?.removeOverlays(mapView.overlays)
         let circle = MKCircle(center: circleRegionCoordinate, radius: circleRegion.radius)
-        self.mapView?.add(circle)
+        self.mapView?.add(circle) // The geofence
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let container = container {
-            delegate?.showMap(for: container)
+            delegate?.showMap(for: container) // Show the map when selecting a location
         }
 
         if matchingItems.count > 0 {
             let item = matchingItems[indexPath.row].placemark
             let coordinate = Coordinate(location: item.location!)
-     //       monitorDelegate?.startMonitoringCoordinates(coordinate)
+     //       monitorDelegate?.startMonitoringCoordinates(coordinate) // I used to start monitoring when selecting a location, but not anymore.
             handleMapSearchDelegate?.dropPinZoomIn(placemark: item)
-            geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location)
+            geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location) // Send data back to detail VC.
             searchController.isActive = false
         } else {
             if reminder?.eventType != nil {
@@ -213,7 +221,8 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
                     placemark = placemarks?[0]
                     
                     let mkplacemark = MKPlacemark(placemark: placemark)
-                    // used to be start monitoring here.
+                    // used to be start monitoring here as well.
+                    // Send data back to detail vc.
                     self.geoSaveB?.dataSaved(latitude: mkplacemark.coordinate.latitude, longitude: mkplacemark.coordinate.longitude, radius: 50.00, location: self.location)
                 }
                 
@@ -245,8 +254,10 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
 
 extension LocationListDataSource: LocationPermissionsDelegate, LocationManagerDelegate, SavedReminderLocation {
     func savedLocation(for reminder: Reminder?) {
-        self.reminder = reminder
+        self.reminder = reminder // assigning the reminder in here from location vc.
     }
+    
+    // Location Manager Delegates I built on top of what Pasan taught.
     
     func authorizationSucceeded() {
         print("Authorization Succeeded")

@@ -11,6 +11,8 @@ import UserNotifications
 import UIKit
 import MapKit
 
+// Look at all those delegates 🐓
+
 protocol GeoNotificationDelegate: class {
     func showNotification(withTitle title: String, message: String)
 }
@@ -94,6 +96,11 @@ protocol PassReminderDelegate: class {
     func passReminder(_ reminder: Reminder?)
 }
 
+// Yes I know it isn't a delegate that is in the delegate file..
+enum EventType: String {
+    case onEntry = "On Entry"
+    case onExit = "On Exit"
+}
 
 
 

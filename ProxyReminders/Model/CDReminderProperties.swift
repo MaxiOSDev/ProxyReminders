@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-
+// My CoreData Properties
 public class Reminder: NSManagedObject {}
 
 extension Reminder {

@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 
+// The core data stack as taught.
 class CoreDataStack {
     lazy var managedObjectContext: NSManagedObjectContext = {
         let container = self.persistentContainer

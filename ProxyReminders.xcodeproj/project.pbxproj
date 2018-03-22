@@ -28,6 +28,7 @@
 		FB325D4020603B660089C664 /* ComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3F20603B660089C664 /* ComposeCell.swift */; };
 		FB9AF9EE20613D6D0077CC5D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */; };
 		FB9AF9F42062E6CD0077CC5D /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9F32062E6CD0077CC5D /* Delegates.swift */; };
+		FB9AF9FA2063FD240077CC5D /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9F92063FD240077CC5D /* NotificationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		FB325D3F20603B660089C664 /* ComposeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
 		FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		FB9AF9F32062E6CD0077CC5D /* Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegates.swift; sourceTree = "<group>"; };
+		FB9AF9F92063FD240077CC5D /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 				FB9AF9EC20613D5A0077CC5D /* LocationGroup */,
 				FB325D3520602C530089C664 /* CoreDataStack.swift */,
 				FB325D3720602C9B0089C664 /* CDReminderProperties.swift */,
+				FB9AF9F92063FD240077CC5D /* NotificationManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				FB325D30206028780089C664 /* ReminderDetailController.swift in Sources */,
 				FB325D3620602C530089C664 /* CoreDataStack.swift in Sources */,
 				FB325D2C20601EFE0089C664 /* UIImageX.swift in Sources */,
+				FB9AF9FA2063FD240077CC5D /* NotificationManager.swift in Sources */,
 				FB325D3E206034A20089C664 /* LocationListDataSource.swift in Sources */,
 				FB325D3420602A630089C664 /* LocationCell.swift in Sources */,
 				FB325D3820602C9B0089C664 /* CDReminderProperties.swift in Sources */,

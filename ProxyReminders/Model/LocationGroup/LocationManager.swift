@@ -41,22 +41,21 @@ protocol LocationManagerDelegate: class {
     func failedWithError(_ error: LocationError)
 }
 
-class LocationManager: NSObject, CLLocationManagerDelegate { // MapMonitorDelegate
+class LocationManager: NSObject, CLLocationManagerDelegate {
 
-    
     let manager = CLLocationManager()
+    // Warning. Lots of delegates.
     weak var permissionDelegate: LocationPermissionsDelegate?
     weak var locationManagerDelgate: LocationManagerDelegate?
-
     weak var geoAlertDelegate: GeoNotificationDelegate?
     var geoReminderDelegate: GeoReminderDelegate?
+    // The location list datasource
     var dataSource: LocationListDataSource?
     var map: MKMapView?
     var segmentedControl: UISegmentedControl?
     var notificationManager = NotificationManager()
     
-    var locationTrigger: UNLocationNotificationTrigger?
-    var reminder: Reminder?
+    var reminder: Reminder? // Is nil when app is in background
     
     init(delegate: LocationManagerDelegate?, permissionDelegate: LocationPermissionsDelegate?, map: MKMapView?) {
         self.locationManagerDelgate = delegate
@@ -126,7 +125,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate { // MapMonitorDelega
         map?.showsUserLocation = true
     }
 
-    
+    // The following is my headache..
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         print("Monitoring Started")
         print("Region identifier inside the location manager after monitoring: \(region.identifier)")
@@ -147,13 +146,12 @@ class LocationManager: NSObject, CLLocationManagerDelegate { // MapMonitorDelega
 
 extension LocationManager: PassReminderDelegate {
     func passReminder(_ reminder: Reminder?) {
-        self.reminder = reminder
-
+        self.reminder = reminder // To hold reminder that was just made in memory, but ends up being nil after monitoring starts and app is in background
     }
 }
 
 extension LocationController: GeoNotificationDelegate {
-
+    // How I used to make it work but both didEnter and didExit would make a notification. This function is unused
     func showNotification(withTitle title: String, message: String) {
         let content = UNMutableNotificationContent()
         content.title = title
@@ -171,63 +169,6 @@ extension LocationController: GeoNotificationDelegate {
 }
 
 
-class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
-
-    let notificationCenter = UNUserNotificationCenter.current()
-    
-    var geoRegion: CLCircularRegion?
-    var locationManager: LocationManager?
-    
-    func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
-        let text = reminder.text
-     //   print("Reminder Identifier \(reminder.identifier)")
- //       guard let identifier = reminder.identifier else { return }
-        guard let notificationTrigger = trigger else { return }
-        
-        let content = UNMutableNotificationContent()
-        content.body = "back to apple"
-        content.sound = .default()
-        let request = UNNotificationRequest(identifier: "identifier", content: content, trigger: notificationTrigger)
-        
-        notificationCenter.add(request)
-        
-    }
-
-    func addLocationEvent(forReminder reminder: Reminder, forEvent type: EventType) -> UNLocationNotificationTrigger? {
-     //   guard let latitude = reminder.latitude as? Double else { return nil }
-    //    guard let longitude = reminder.longitude as? Double else { return nil }
-   //    guard let regionIdentifier = reminder.identifier else { return nil }
-    //    let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-    //    let region = CLCircularRegion(center: center, radius: 50.00, identifier: regionIdentifier)
-        
-        print("Manager \(locationManager)")
-        
-        let region = geoRegion!
-        print("Region identifier inside the notification manager: \(region.identifier)")
-        locationManager?.manager.startMonitoring(for: region)
-        print("Reminder identifier: \(reminder.identifier)")
-        print("Region \(region)")
-        switch type {
-        case .onEntry:
-            region.notifyOnExit = false
-            region.notifyOnEntry = true
-        case .onExit:
-            region.notifyOnExit = true
-            region.notifyOnEntry = false
-        }
-        
-        return UNLocationNotificationTrigger(region: region, repeats: false)
-    }
-    
-    func monitorRegionB(_ region: CLCircularRegion) {
-        self.geoRegion = region
-    }
-    
-    func locationManager(_ manager: LocationManager) {
-        self.locationManager = manager
-    }
-    
-}
 
 
 

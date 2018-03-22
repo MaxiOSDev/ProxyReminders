@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 import UIKit
 
+// A Fetched Results Controller as taught. Nothing new
 class ReminderFetchedResultsController: NSFetchedResultsController<Reminder>, NSFetchedResultsControllerDelegate {
     private let tableView: UITableView
     
