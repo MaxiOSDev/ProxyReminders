@@ -45,7 +45,7 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
         
         let region = geoRegion!
         print("Region identifier inside the notification manager: \(region.identifier)")
-        locationManager?.manager.startMonitoring(for: region) // Location manager starts monitoring.
+
         print("Reminder identifier: \(reminder.identifier)")
         print("Region \(region)")
         // My idea was to switch if the region notifys by type. But it seems to not be working properly, both didEnter and didExit go off.
@@ -58,6 +58,7 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
             region.notifyOnEntry = false
         }
         
+        locationManager?.manager.startMonitoring(for: region) // Location manager starts monitoring.
         return UNLocationNotificationTrigger(region: region, repeats: false)
     }
     // Some delegate methods.

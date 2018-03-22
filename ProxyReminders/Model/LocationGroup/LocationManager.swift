@@ -57,6 +57,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     var reminder: Reminder? // Is nil when app is in background
     
+    var regions = [CLRegion]()
     init(delegate: LocationManagerDelegate?, permissionDelegate: LocationPermissionsDelegate?, map: MKMapView?) {
         self.locationManagerDelgate = delegate
         self.permissionDelegate = permissionDelegate
@@ -129,19 +130,26 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         print("Monitoring Started")
         print("Region identifier inside the location manager after monitoring: \(region.identifier)")
+        print("Region notifyEnter: \(region.notifyOnEntry)")
+        print("Region notifyExit: \(region.notifyOnExit)")
+        
+        print("Notification Manager geo region \(notificationManager.geoRegion)")
     }
 
-    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Region Entered: \(region.identifier)")
         
+        print("Region Entered: \(region.identifier)")
+        print("In DidEnterRegion, notifyRegion: \(region.notifyOnEntry)")
+
+        geoAlertDelegate?.showNotification(withTitle: "Region Entered", message: "You just left the region")
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Region Exited: \(region.identifier)")
+        print("In DidExitRegion, notifyRegion: \(region.notifyOnExit)")
 
+        geoAlertDelegate?.showNotification(withTitle: "Region Exited", message: "You just left the region")
     }
-
 }
 
 extension LocationManager: PassReminderDelegate {
@@ -155,7 +163,7 @@ extension LocationController: GeoNotificationDelegate {
     func showNotification(withTitle title: String, message: String) {
         let content = UNMutableNotificationContent()
         content.title = title
-        content.body = message
+        content.body = (reminder?.text)!
         content.badge = 1
         content.sound = .default()
         let identifier = UUID().uuidString
