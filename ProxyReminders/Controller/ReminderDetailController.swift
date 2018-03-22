@@ -8,22 +8,15 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 enum EventType: String {
     case onEntry = "On Entry"
     case onExit = "On Exit"
 }
 
-protocol GeoReminderDelegate: class {
-    var latitude: Double? { get }
-    var longitude: Double? { get }
-    var eventType: EventType? { get }
-    var identifier: String? { get set }
-    var radius: Double? { get }
-    var location: String? { get }
-}
 
-class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
+class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, GeoRegionDelegateB {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationSwitch: UISwitch!
@@ -33,6 +26,8 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
     var context: NSManagedObjectContext?
     var reminder: Reminder?
     var geoDelegate: GeoReminderDelegate?
+    weak var geoRegionDelegateC: GeoRegionDelegateC?
+    weak var passReminder: PassReminderDelegate?
     
     var latitude: Double?
     var longitude: Double?
@@ -41,14 +36,18 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
     var radius: Double?
     var location: String?
     var textViewText: String?
-    
+    var geoRegion: CLCircularRegion?
 
+    
+    var notificationManager = NotificationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
         print("Reminder \(reminder)")
+        geoRegionDelegateC = notificationManager
         configureView()
         
     }
@@ -82,8 +81,15 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
             reminder.radius = radius as! NSNumber
             reminder.eventType = eventType?.rawValue
             context?.saveChanges()
+            geoRegionDelegateC?.monitorRegionB(geoRegion!)
+            print("Reminder here \(reminder)")
+            passReminder?.passReminder(reminder)
+            
+            let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType!)
+            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+            
         }
-        
+
         dismiss(animated: true, completion: nil)
     }
     
@@ -99,6 +105,12 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
     func saveIdentifier(identifier: String?) {
         self.identifier = identifier
     }
+    
+    func monitorRegionB(_ region: CLCircularRegion) {
+        self.geoRegion = region
+        print("Geo Region in detail, \(geoRegion)")
+    }
+    
     
     
     func configureView() {
@@ -153,7 +165,8 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB {
             let locationVC = segue.destination as! LocationController
             locationVC.geoSaveDelegate = self
             locationVC.geoIdentifier = self
-            
+            locationVC.geoRegionDelegate = self
+            locationVC.locationManagerPassed = notificationManager
             if let oldReminder = reminder {
                 if oldReminder.eventType != nil && reminder != nil {
                     locationVC.eventType = EventType(rawValue: oldReminder.eventType!)

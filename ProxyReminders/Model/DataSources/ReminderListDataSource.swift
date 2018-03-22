@@ -10,13 +10,6 @@ import Foundation
 import UIKit
 import CoreData
 
-protocol ReminderCellDelegate: AnyObject {
-    func buttonCloseTapped(cell: ReminderCell)
-}
-
-protocol SegueDelegate {
-    func callSegueFromCell(myData dataObject: AnyObject)
-}
 
 class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     let tableView: UITableView
@@ -34,7 +27,6 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     }
     
     func reminderSelectedRow() -> IndexPath {
-        print("Inside body of reminderSelectedRow function \(indexPathForSelectedRow)")
         return indexPathForSelectedRow!
     }
     

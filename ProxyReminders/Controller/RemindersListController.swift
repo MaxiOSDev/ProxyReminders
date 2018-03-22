@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class RemindersListController: UITableViewController {
     
@@ -25,6 +26,11 @@ class RemindersListController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            
+        }
+        
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
         dataSource.delegate = self

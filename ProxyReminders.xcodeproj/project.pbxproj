@@ -27,6 +27,7 @@
 		FB325D3E206034A20089C664 /* LocationListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3D206034A20089C664 /* LocationListDataSource.swift */; };
 		FB325D4020603B660089C664 /* ComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB325D3F20603B660089C664 /* ComposeCell.swift */; };
 		FB9AF9EE20613D6D0077CC5D /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */; };
+		FB9AF9F42062E6CD0077CC5D /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9AF9F32062E6CD0077CC5D /* Delegates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		FB325D3D206034A20089C664 /* LocationListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListDataSource.swift; sourceTree = "<group>"; };
 		FB325D3F20603B660089C664 /* ComposeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
 		FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		FB9AF9F32062E6CD0077CC5D /* Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Delegates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,11 +123,8 @@
 		FB9AF9E9206139210077CC5D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FB325D2920601EAB0089C664 /* ReminderCell.swift */,
-				FB325D3F20603B660089C664 /* ComposeCell.swift */,
-				FB325D3320602A630089C664 /* LocationCell.swift */,
-				FB325D2B20601EFE0089C664 /* UIImageX.swift */,
-				FB325D2D20601F0B0089C664 /* UIButtonX.swift */,
+				FB9AF9F72063EF570077CC5D /* Cells */,
+				FB9AF9F62063EF480077CC5D /* IBDesignable */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -133,11 +132,11 @@
 		FB9AF9EA2061392C0077CC5D /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FB9AF9F52063EF2C0077CC5D /* DataSources */,
+				FB9AF9F22062E6B90077CC5D /* Delegates */,
 				FB9AF9EC20613D5A0077CC5D /* LocationGroup */,
 				FB325D3520602C530089C664 /* CoreDataStack.swift */,
 				FB325D3720602C9B0089C664 /* CDReminderProperties.swift */,
-				FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */,
-				FB325D3D206034A20089C664 /* LocationListDataSource.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -156,6 +155,42 @@
 				FB9AF9ED20613D6D0077CC5D /* LocationManager.swift */,
 			);
 			path = LocationGroup;
+			sourceTree = "<group>";
+		};
+		FB9AF9F22062E6B90077CC5D /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				FB9AF9F32062E6CD0077CC5D /* Delegates.swift */,
+			);
+			path = Delegates;
+			sourceTree = "<group>";
+		};
+		FB9AF9F52063EF2C0077CC5D /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D3B20602DD00089C664 /* ReminderListDataSource.swift */,
+				FB325D3D206034A20089C664 /* LocationListDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		FB9AF9F62063EF480077CC5D /* IBDesignable */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D2B20601EFE0089C664 /* UIImageX.swift */,
+				FB325D2D20601F0B0089C664 /* UIButtonX.swift */,
+			);
+			path = IBDesignable;
+			sourceTree = "<group>";
+		};
+		FB9AF9F72063EF570077CC5D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				FB325D2920601EAB0089C664 /* ReminderCell.swift */,
+				FB325D3F20603B660089C664 /* ComposeCell.swift */,
+				FB325D3320602A630089C664 /* LocationCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +281,7 @@
 				FB325D1020601D8F0089C664 /* AppDelegate.swift in Sources */,
 				FB325D2E20601F0B0089C664 /* UIButtonX.swift in Sources */,
 				FB325D3A20602CC10089C664 /* ReminderFetchedResultsController.swift in Sources */,
+				FB9AF9F42062E6CD0077CC5D /* Delegates.swift in Sources */,
 				FB325D30206028780089C664 /* ReminderDetailController.swift in Sources */,
 				FB325D3620602C530089C664 /* CoreDataStack.swift in Sources */,
 				FB325D2C20601EFE0089C664 /* UIImageX.swift in Sources */,

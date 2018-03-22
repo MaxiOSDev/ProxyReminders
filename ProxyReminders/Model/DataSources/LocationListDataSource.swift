@@ -11,10 +11,6 @@ import CoreData
 import UIKit
 import MapKit
 
-protocol HandleMapSearch {
-    func dropPinZoomIn(placemark: MKPlacemark)
-}
-
 class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     private let tableView: UITableView
     private let searchController: UISearchController
@@ -29,13 +25,17 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     var delegate: MapViewDelegate?
     var container: UIView?
     var circleRenderer: MKCircleRenderer!
-    weak var monitorDelegate: MapMonitorDelegate?
+  //  weak var monitorDelegate: MapMonitorDelegate?
+    weak var monitorRegion: GeoRegionDelegate?
+    weak var geoIdentifier: GeoIdentifierA?
     weak var geoSaveB: GeoSaveB?
     var oldLatitude: Double?
     var oldLongitude: Double? 
     var reminder: Reminder?
     
     var segmentedControl: UISegmentedControl!
+    
+    var notificationCenter = NotificationCenter()
     
     init(tableView: UITableView, searchController: UISearchController, mapView: MKMapView, container: UIView?, control: UISegmentedControl?) {
         self.tableView = tableView
@@ -116,8 +116,8 @@ class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
                     cell.locationAddressLabel.text = self.parseAddress(selectedItem: mkplacemark)
                     self.delegate?.showMap(for: self.mapView!)
                     self.dropPinZoomIn(placemark: mkplacemark)
-                    let coordinate = Coordinate(location: mkplacemark.location!)
-                    self.monitorDelegate?.startMonitoringCoordinates(coordinate)
+                 //   let coordinate = Coordinate(location: mkplacemark.location!)
+                 //   self.monitorDelegate?.startMonitoringCoordinates(coordinate)
                     
                 }
 
@@ -173,6 +173,18 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         let span = MKCoordinateSpanMake(0.003, 0.003)
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
+        
+        let identifier = UUID().uuidString
+        geoIdentifier?.saveIdentifier(identifier: identifier)
+        let circleRegionCoordinate = CLLocationCoordinate2D(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
+        let circleRegion = CLCircularRegion(center: circleRegionCoordinate, radius: 50.00, identifier: identifier)
+        // Send the circle region?
+        // FIXME: - CircleRegionDelegate implementation
+        monitorRegion?.monitorRegion(circleRegion)
+
+        self.mapView?.removeOverlays(mapView.overlays)
+        let circle = MKCircle(center: circleRegionCoordinate, radius: circleRegion.radius)
+        self.mapView?.add(circle)
     }
     
     
@@ -182,11 +194,10 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
             delegate?.showMap(for: container)
         }
 
-        
         if matchingItems.count > 0 {
             let item = matchingItems[indexPath.row].placemark
             let coordinate = Coordinate(location: item.location!)
-            monitorDelegate?.startMonitoringCoordinates(coordinate)
+     //       monitorDelegate?.startMonitoringCoordinates(coordinate)
             handleMapSearchDelegate?.dropPinZoomIn(placemark: item)
             geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location)
             searchController.isActive = false
@@ -202,7 +213,7 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
                     placemark = placemarks?[0]
                     
                     let mkplacemark = MKPlacemark(placemark: placemark)
-                    
+                    // used to be start monitoring here.
                     self.geoSaveB?.dataSaved(latitude: mkplacemark.coordinate.latitude, longitude: mkplacemark.coordinate.longitude, radius: 50.00, location: self.location)
                 }
                 

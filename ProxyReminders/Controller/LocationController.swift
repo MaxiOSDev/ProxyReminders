@@ -11,32 +11,8 @@ import MapKit
 import CoreLocation
 import UserNotifications
 
-protocol MapViewDelegate: class {
-    func showMap(for view: UIView)
-    func hideMap()
-}
 
-protocol GeoSave: class {
-    func dataSaved(latitude: Double?, longitude: Double?, eventType: EventType?, radius: Double?, location: String?)
-}
-
-protocol GeoSaveB: class {
-    func dataSaved(latitude: Double?, longitude: Double?, radius: Double?, location: String?)
-}
-
-protocol GeoIdentifierA: class {
-    func saveIdentifier(identifier: String?)
-}
-
-protocol GeoIdentifierB: class {
-    func saveIdentifier(identifier: String?)
-}
-
-protocol SavedReminderLocation: class {
-    func savedLocation(for reminder: Reminder?)
-}
-
-class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, GeoSaveB, GeoReminderDelegate {
+class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, GeoSaveB, GeoReminderDelegate, GeoRegionDelegate {
   
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var mapContainerView: UIView!
@@ -57,9 +33,12 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     weak var geoSaveDelegate: GeoSave?
     weak var geoIdentifier: GeoIdentifierB?
     weak var reminderLocationDelegate: SavedReminderLocation?
+    weak var eventNotificationDelegate: EventNotificationDelegate?
+    weak var geoRegionDelegate: GeoRegionDelegateB?
+    weak var locationManagerPassed: LocationManagerDelegatePassed?
     
-    let notificationCenter = UNUserNotificationCenter.current()
-    
+  //  let notificationCenter = UNUserNotificationCenter.current()
+    let notificationManger = NotificationManager()
     var eventType: EventType?
     var latitude: Double?
     var longitude: Double?
@@ -67,13 +46,11 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     var radius: Double?
     var reminder: Reminder?
     var location: String?
+    var geoRegion: CLCircularRegion?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            
-        }
+
         
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
@@ -82,12 +59,14 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchResultsUpdater = dataSource
         mapView.delegate = dataSource
-        dataSource.monitorDelegate = locationManger
+     //   dataSource.monitorDelegate = locationManger
         dataSource.delegate = self
         dataSource.geoSaveB = self
         locationManger.geoReminderDelegate = self
-        locationManger.geoIdentifier = self
+        dataSource.geoIdentifier = self
         locationManger.geoAlertDelegate = self
+     //   eventNotificationDelegate = locationManger
+        dataSource.monitorRegion = self
         definesPresentationContext = true
         requestLocationsPermissions()
         dataSource.savedLocation(for: reminder)
@@ -103,11 +82,15 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
             dataSource.circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.4)
             geoSaveDelegate?.dataSaved(latitude: latitude, longitude: longitude, eventType: .onEntry, radius: 50.00, location: location)
             geoIdentifier?.saveIdentifier(identifier: identifier)
+            geoRegionDelegate?.monitorRegionB(geoRegion!)
+            locationManagerPassed?.locationManager(locationManger)
             print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
         } else {
             dataSource.circleRenderer.fillColor = UIColor.clear
             geoSaveDelegate?.dataSaved(latitude: latitude, longitude: longitude, eventType: .onExit, radius: 50.00, location: location)
             geoIdentifier?.saveIdentifier(identifier: identifier)
+            geoRegionDelegate?.monitorRegionB(geoRegion!)
+            locationManagerPassed?.locationManager(locationManger)
             print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
         }
     }
@@ -142,6 +125,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     
     func saveIdentifier(identifier: String?) {
         self.identifier = identifier
+        print(self.identifier)
     }
     
     func dataSaved(latitude: Double?, longitude: Double?, radius: Double?, location: String?) {
@@ -153,6 +137,12 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         self.longitude = longitude
         self.radius = radius
         self.location = location
+    }
+    
+    func monitorRegion(_ region: CLCircularRegion) {
+        print("Region that was passed \(region)")
+        self.geoRegion = region
+        print("The changed GeoRegion \(geoRegion)")
     }
 
 }
