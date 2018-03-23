@@ -56,6 +56,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var map: MKMapView?
     var segmentedControl: UISegmentedControl?
     var notificationManager = NotificationManager()
+    let context = CoreDataStack().managedObjectContext
     
     var reminder: Reminder? // Is nil when app is in background
     
@@ -138,17 +139,84 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         print("Region Identifier here in didStart \(region.identifier)")
+
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Did enter region")
-        geoAlertDelegate?.handleEvent(forRegion: region)
+        print("Did enter region: \(region.identifier)")
+        regions.append(region)
+        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
+        do {
+            let reminders = try context.fetch(fetchRequest)
+            for proxyReminder in reminders {
+                for geoRegion in regions {
+                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+                    if let proxyIdentifier = proxyReminder.identifier {
+                        if proxyIdentifier == region.identifier {
+                            handleEvent(forRegion: region, reminder: proxyReminder)
+                        } else {
+                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+     //   geoAlertDelegate?.handleEvent(forRegion: region)
+   //     handleEvent(forRegion: region)
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Did exit region")
-        geoAlertDelegate?.handleEvent(forRegion: region)
+        print("Did exit region: \(region.identifier)")
+        
+        regions.append(region)
+        
+        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
+        do {
+            let reminders = try context.fetch(fetchRequest)
+            for proxyReminder in reminders {
+                for geoRegion in regions {
+                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+                    if let proxyIdentifier = proxyReminder.identifier {
+                        if proxyIdentifier == region.identifier {
+                            handleEvent(forRegion: region, reminder: proxyReminder)
+                        } else {
+                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+   //     geoAlertDelegate?.handleEvent(forRegion: region)
+    //    handleEvent(forRegion: region)
     }
+    
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+        print("Failed to monitor region: \(region), with error: \(error)")
+    }
+    
+    func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
+        
+        let content = UNMutableNotificationContent()
+//        guard let reminder = reminder else {
+//            print("Didn't work out bud")
+//            return }
+        let text = reminder.text
+        guard let identifier = reminder.identifier else { return }
+      //  let identifier = "Test Identifier 2"
+        content.title = text
+        print("The text is here. It worked! \(text)")
+        content.sound = .default()
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+        let center = UNUserNotificationCenter.current()
+        center.add(request) { (erorr) in
+        }
+    }
+    
+    
 }
 
 extension LocationManager: PassReminderDelegate {

@@ -43,7 +43,6 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
 
     // My notification manager
     var notificationManager = NotificationManager()
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,7 +83,12 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context!) as! Reminder
             reminder.text = text
             reminder.location = location
-            reminder.identifier = identifier
+            if geoRegion?.identifier != nil {
+               reminder.identifier = geoRegion?.identifier
+            } else {
+                reminder.identifier = identifier
+            }
+            
             reminder.latitude = latitude as? NSNumber
             reminder.longitude = longitude as? NSNumber
             reminder.radius = radius as? NSNumber
@@ -102,7 +106,6 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             } else {
                 geoRegion.notifyOnExit = true
                 geoRegion.notifyOnEntry = false
-       
             }
             
             locationManager.startMonitoring(region: geoRegion)
