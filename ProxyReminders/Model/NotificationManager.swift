@@ -21,14 +21,14 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
         //  let text = reminder.text
         //  print("Reminder Identifier \(reminder.identifier)")
         //  guard let identifier = reminder.identifier else { return }
-        
         // I would use the addLocationEvent method to make a UNLocationNotificationTrigger and then pass it through here.
-        guard let notificationTrigger = trigger else { return }
         
+        guard let notificationTrigger = trigger else { return }
+        let identifier = notificationTrigger.region.identifier
         let content = UNMutableNotificationContent()
         content.body = "back to apple" // Just for testing
         content.sound = .default()
-        let request = UNNotificationRequest(identifier: "identifier", content: content, trigger: notificationTrigger)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: notificationTrigger)
         
         notificationCenter.add(request) // Adds the request but never goes off.
         

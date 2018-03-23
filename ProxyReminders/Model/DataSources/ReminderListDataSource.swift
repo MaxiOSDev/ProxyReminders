@@ -25,6 +25,7 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         self.tableView = tableView
         self.context = context
     }
+    
     // Now since my setup with cells was a tad different I had to use a segue differently to get the proper indexpath
     func reminderSelectedRow() -> IndexPath {
         return indexPathForSelectedRow! // This sometimes would crash. Need fix or fail gracefully
@@ -97,6 +98,7 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         reminder.text = text
         context.saveChanges()
     }
+    
     
     // Make sure that reminder cell gets populated with remidners.
     func configureCell(_ cell: ReminderCell, at indexPath: IndexPath) -> UITableViewCell {

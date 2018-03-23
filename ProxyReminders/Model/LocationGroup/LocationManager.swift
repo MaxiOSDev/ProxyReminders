@@ -48,6 +48,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     weak var permissionDelegate: LocationPermissionsDelegate?
     weak var locationManagerDelgate: LocationManagerDelegate?
     weak var geoAlertDelegate: GeoNotificationDelegate?
+    weak var didNotifyDelegate: didNotifyDelegate?
+    
     var geoReminderDelegate: GeoReminderDelegate?
     // The location list datasource
     var dataSource: LocationListDataSource?
@@ -58,12 +60,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     var reminder: Reminder? // Is nil when app is in background
     
     var regions = [CLRegion]()
-    init(delegate: LocationManagerDelegate?, permissionDelegate: LocationPermissionsDelegate?, map: MKMapView?) {
+    init(delegate: LocationManagerDelegate?, permissionDelegate: LocationPermissionsDelegate?, map: MKMapView?, geoAlertDelegate: GeoNotificationDelegate?) {
         self.locationManagerDelgate = delegate
         self.permissionDelegate = permissionDelegate
         self.map = map
+        self.geoAlertDelegate = geoAlertDelegate
+        
         super.init()
         manager.delegate = self
+        
     }
     
     static var isAuthorized: Bool {
@@ -115,6 +120,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let location = locations.first else { locationManagerDelgate?.failedWithError(.unableToFindLocation)
             return
         }
+        
         let coordinate = Coordinate(location: location)
         let span = MKCoordinateSpanMake(0.05, 0.05)
 
@@ -122,33 +128,26 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         map?.setRegion(region, animated: true)
         
         locationManagerDelgate?.obtainedCoordinates(coordinate)
-        manager.stopUpdatingLocation()
+
         map?.showsUserLocation = true
     }
-
-    // The following is my headache..
-    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        print("Monitoring Started")
-        print("Region identifier inside the location manager after monitoring: \(region.identifier)")
-        print("Region notifyEnter: \(region.notifyOnEntry)")
-        print("Region notifyExit: \(region.notifyOnExit)")
-        
-        print("Notification Manager geo region \(notificationManager.geoRegion)")
+    
+    func startMonitoring(region: CLRegion) {
+        manager.startMonitoring(for: region)
     }
-
+    
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
+        print("Region Identifier here in didStart \(region.identifier)")
+    }
+    
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        
-        print("Region Entered: \(region.identifier)")
-        print("In DidEnterRegion, notifyRegion: \(region.notifyOnEntry)")
-
-        geoAlertDelegate?.showNotification(withTitle: "Region Entered", message: "You just left the region")
+        print("Did enter region")
+        geoAlertDelegate?.handleEvent(forRegion: region)
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Region Exited: \(region.identifier)")
-        print("In DidExitRegion, notifyRegion: \(region.notifyOnExit)")
-
-        geoAlertDelegate?.showNotification(withTitle: "Region Exited", message: "You just left the region")
+        print("Did exit region")
+        geoAlertDelegate?.handleEvent(forRegion: region)
     }
 }
 
@@ -158,12 +157,12 @@ extension LocationManager: PassReminderDelegate {
     }
 }
 
-extension LocationController: GeoNotificationDelegate {
+extension LocationController {
     // How I used to make it work but both didEnter and didExit would make a notification. This function is unused
     func showNotification(withTitle title: String, message: String) {
         let content = UNMutableNotificationContent()
         content.title = title
-        content.body = (reminder?.text)!
+        content.body = message
         content.badge = 1
         content.sound = .default()
         let identifier = UUID().uuidString

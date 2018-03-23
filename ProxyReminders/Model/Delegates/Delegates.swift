@@ -10,11 +10,12 @@ import Foundation
 import UserNotifications
 import UIKit
 import MapKit
+import CoreLocation
 
 // Look at all those delegates 🐓
 
 protocol GeoNotificationDelegate: class {
-    func showNotification(withTitle title: String, message: String)
+    func handleEvent(forRegion region: CLRegion)
 }
 
 protocol EventNotificationDelegate: class {
@@ -23,6 +24,10 @@ protocol EventNotificationDelegate: class {
 }
 
 protocol LocationManagerDelegatePassed: class {
+    func locationManager(_ manager: LocationManager)
+}
+
+protocol LocationManagerDelegatePassedB: class {
     func locationManager(_ manager: LocationManager)
 }
 
@@ -94,6 +99,15 @@ protocol SavedReminderLocation: class {
 
 protocol PassReminderDelegate: class {
     func passReminder(_ reminder: Reminder?)
+}
+
+protocol didReceieveNotificationDelegate: class {
+    func notificationManagerCenter(_ manager: NotificationManager)
+}
+
+
+protocol didNotifyDelegate: class {
+    func didNotifyManager()
 }
 
 // Yes I know it isn't a delegate that is in the delegate file..

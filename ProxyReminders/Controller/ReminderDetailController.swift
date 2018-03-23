@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CoreLocation
+import UserNotifications
 
 class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, GeoRegionDelegateB {
 
@@ -23,7 +24,6 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     var reminder: Reminder?
     var geoDelegate: GeoReminderDelegate?
     weak var geoRegionDelegateC: GeoRegionDelegateC?
-    weak var passReminder: PassReminderDelegate?
     
     // Propeties that hold the data from the LocationController and also Locaiton Datasource
     // so the reminder can be saved with this data. Yes I used a ton of delegates. I know.
@@ -35,12 +35,19 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     var location: String?
     var textViewText: String?
     var geoRegion: CLCircularRegion?
+    
+    lazy var locationManager: LocationManager = {
+ 
+        return LocationManager(delegate: self, permissionDelegate: self, map: nil, geoAlertDelegate: self)
+    }()
 
     // My notification manager
     var notificationManager = NotificationManager()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
@@ -78,25 +85,33 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             reminder.text = text
             reminder.location = location
             reminder.identifier = identifier
-            reminder.latitude = latitude as! NSNumber
-            reminder.longitude = longitude as! NSNumber
-            reminder.radius = radius as! NSNumber
+            reminder.latitude = latitude as? NSNumber
+            reminder.longitude = longitude as? NSNumber
+            reminder.radius = radius as? NSNumber
             reminder.eventType = eventType?.rawValue
             context?.saveChanges()
-            
             geoRegionDelegateC?.monitorRegionB(geoRegion!) // This isn't really monitoring, it is passing the region around.
             // So it eventually reaches the notification controller. See, the region goes nil so I had to use 3 delegates. Cumbersome I know.
+            guard let geoRegion = geoRegion else {
+                print("Geo Region is a bust")
+                return }
+            if eventType == .onEntry {
+                geoRegion.notifyOnExit = false
+                geoRegion.notifyOnEntry = true
 
-            passReminder?.passReminder(reminder) // I also passed the reminder to the location manager file.
+            } else {
+                geoRegion.notifyOnExit = true
+                geoRegion.notifyOnEntry = false
+       
+            }
             
-            // And this is the UNLocationNotificationTrigger made and then passed to schedule the new notificaiton, but It never actually fires off.
-            let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType!)
-            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+            locationManager.startMonitoring(region: geoRegion)
             
         }
 
         dismiss(animated: true, completion: nil)
     }
+
     
     // Delegate methods so my properties arn't nil, and can be saved into core data
     func dataSaved(latitude: Double?, longitude: Double?, eventType: EventType?, radius: Double?, location: String?) {
@@ -114,8 +129,7 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     func monitorRegionB(_ region: CLCircularRegion) {
         self.geoRegion = region
     }
-    
-    
+
     // Configure the view.
     func configureView() {
         locationSwitch.isOn = false
@@ -174,7 +188,7 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             locationVC.geoSaveDelegate = self
             locationVC.geoIdentifier = self
             locationVC.geoRegionDelegate = self
-            locationVC.locationManagerPassed = notificationManager
+
             if let oldReminder = reminder {
                 if oldReminder.eventType != nil && reminder != nil {
                     locationVC.eventType = EventType(rawValue: oldReminder.eventType!)
@@ -183,9 +197,71 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
                     locationVC.latitude = oldReminder.latitude as? Double
                     locationVC.radius = oldReminder.radius as? Double
                     locationVC.reminder = oldReminder
-
+                    
                 }
             }
         }
     }
 }
+
+extension ReminderDetailController: LocationPermissionsDelegate, LocationManagerDelegate, GeoNotificationDelegate {
+    
+    func handleEvent(forRegion region: CLRegion) {
+        print("Called: \(region)")
+        let content = UNMutableNotificationContent()
+        guard let reminder = reminder else {
+            print("Didn't work out bud")
+            return }
+        let text = reminder.text
+        guard let identifier = reminder.identifier else { return }
+        content.title = text
+        content.sound = .default()
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+        let center = UNUserNotificationCenter.current()
+        center.add(request) { (erorr) in
+        }
+    }
+    
+    func authorizationSucceeded() {
+        print("Authorized")
+    }
+    
+    func authorizationFailedWithStatus(_ status: CLAuthorizationStatus) {
+        print(status)
+    }
+    
+    func obtainedCoordinates(_ coordinate: Coordinate) {
+        print(coordinate)
+    }
+    
+    func failedWithError(_ error: LocationError) {
+        print(error)
+    }
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

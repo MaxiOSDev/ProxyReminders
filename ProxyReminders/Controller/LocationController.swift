@@ -29,7 +29,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     
     // The lazily loaded location manager as taught. Honestly I like having it lazily loaded instead of just having everything in here or the datasource.
     lazy var locationManger: LocationManager = {
-       return LocationManager(delegate: dataSource, permissionDelegate: dataSource, map: mapView)
+        return LocationManager(delegate: dataSource, permissionDelegate: dataSource, map: mapView, geoAlertDelegate: nil)
     }()
     
     // Bunch of delegetes. Yes I know, lots of delegates.
@@ -39,6 +39,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     weak var eventNotificationDelegate: EventNotificationDelegate?
     weak var geoRegionDelegate: GeoRegionDelegateB?
     weak var locationManagerPassed: LocationManagerDelegatePassed?
+    weak var locationManagerPassedB: LocationManagerDelegatePassedB?
     // The Notification Manager
     let notificationManger = NotificationManager()
     
@@ -71,13 +72,14 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         dataSource.geoSaveB = self
         locationManger.geoReminderDelegate = self
         dataSource.geoIdentifier = self
-        locationManger.geoAlertDelegate = self
+
         dataSource.monitorRegion = self
         
         definesPresentationContext = true
         // Request Locations permission
         requestLocationsPermissions()
         dataSource.savedLocation(for: reminder)
+        locationManagerPassedB?.locationManager(locationManger)
     }
 
     override func didReceiveMemoryWarning() {
