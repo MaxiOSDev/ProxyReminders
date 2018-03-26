@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import CoreData
+import CoreLocation
 
 // My data source for reminders.
 class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -16,6 +17,7 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     let context: NSManagedObjectContext
     var indexPathForSelectedRow: IndexPath?
     var delegate: SegueDelegate?
+    let locationManager = CLLocationManager()
     
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: context, tableView: tableView)
@@ -76,8 +78,12 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let reminder = fetchedResultsController.object(at: indexPath)
+        if reminder.identifier != nil {
+            stopMonitoringLocation(for: reminder)
+        }
         self.context.delete(reminder)
         self.context.saveChanges()
+        
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
@@ -120,6 +126,14 @@ extension ReminderListDataSource: ReminderCellDelegate {
         let indexPath = self.tableView.indexPath(for: cell)
         indexPathForSelectedRow = indexPath
         delegate?.callSegueFromCell(myData: self)
+    }
+    
+    func stopMonitoringLocation(for reminder: Reminder) {
+        for monitoredRegion in locationManager.monitoredRegions {
+            if monitoredRegion.identifier == reminder.identifier {
+                locationManager.stopMonitoring(for: monitoredRegion)
+            }
+        }
     }
 }
 

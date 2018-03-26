@@ -150,6 +150,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             let reminders = try context.fetch(fetchRequest)
             for proxyReminder in reminders {
                 for geoRegion in regions {
+                    print("Geo Region Identifiers: \(geoRegion.identifier)")
                     print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
                     if let proxyIdentifier = proxyReminder.identifier {
                         if proxyIdentifier == region.identifier {
@@ -163,8 +164,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         } catch {
             print(error)
         }
-     //   geoAlertDelegate?.handleEvent(forRegion: region)
-   //     handleEvent(forRegion: region)
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
@@ -177,6 +176,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             let reminders = try context.fetch(fetchRequest)
             for proxyReminder in reminders {
                 for geoRegion in regions {
+                    print("Geo Region Identifiers: \(geoRegion.identifier)")
                     print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
                     if let proxyIdentifier = proxyReminder.identifier {
                         if proxyIdentifier == region.identifier {
@@ -190,8 +190,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         } catch {
             print(error)
         }
-   //     geoAlertDelegate?.handleEvent(forRegion: region)
-    //    handleEvent(forRegion: region)
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
@@ -201,12 +199,10 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
         
         let content = UNMutableNotificationContent()
-//        guard let reminder = reminder else {
-//            print("Didn't work out bud")
-//            return }
+
         let text = reminder.text
         guard let identifier = reminder.identifier else { return }
-      //  let identifier = "Test Identifier 2"
+
         content.title = text
         print("The text is here. It worked! \(text)")
         content.sound = .default()
@@ -215,7 +211,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         center.add(request) { (erorr) in
         }
     }
-    
     
 }
 

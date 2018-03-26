@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543523310.3813649"
+            timestampString = "543771102.640435"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
+            startingLineNumber = "252"
+            endingLineNumber = "252"
             landmarkName = "handleEvent(forRegion:)"
             landmarkType = "7">
             <Locations>
@@ -116,11 +116,11 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543523311.724041"
+                  timestampString = "543771102.886494"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "224"
-                  endingLineNumber = "224"
+                  startingLineNumber = "252"
+                  endingLineNumber = "252"
                   offsetFromSymbolStart = "1473">
                </Location>
                <Location
@@ -131,11 +131,11 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543523311.729161"
+                  timestampString = "543771102.890716"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "225"
-                  endingLineNumber = "225"
+                  startingLineNumber = "253"
+                  endingLineNumber = "253"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543523310.381677"
+            timestampString = "543771102.6406"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
             landmarkName = "handleEvent(forRegion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -164,7 +164,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
-            timestampString = "543523310.381857"
+            timestampString = "543771102.6406929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -176,15 +176,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
-            timestampString = "543523310.387368"
+            timestampString = "543771102.640767"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "locationManager(_:didExitRegion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -196,12 +196,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543523310.387848"
+            timestampString = "543771102.6408809"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "saveReminder(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
+            timestampString = "543771102.640962"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "saveReminder(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
+            timestampString = "543771102.641023"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "locationManager(_:didExitRegion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -212,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543523310.38798"
+            timestampString = "543771102.641086"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "saveReminder(_:)"
             landmarkType = "7">
          </BreakpointContent>

@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import UserNotifications
+import CoreLocation
 
 // My Master View Controller
 class RemindersListController: UITableViewController {
@@ -26,13 +27,24 @@ class RemindersListController: UITableViewController {
     lazy var dataSource: ReminderListDataSource = {
         return ReminderListDataSource(tableView: tableView, context: self.context)
     }()
-
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         // As learnt in a blog
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             // proper handling here
         }
+        UIApplication.shared.applicationIconBadgeNumber = 0 // Sets badge number back to 0
+        let manager = CLLocationManager()
+        print(manager.monitoredRegions.count)
+        for identifier in manager.monitoredRegions {
+            print(identifier.identifier)
+        }
+        
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+            print(notificationRequests.count)
+        }
+        
         // Setting the datasource and delegate
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
@@ -48,14 +60,15 @@ class RemindersListController: UITableViewController {
     
     // The adding of a reminder with the bar button item
     @IBAction func addReminder(_ sender: UIBarButtonItem) {
-        let indexPath = IndexPath(row: 0, section: 0)
-        let cell = tableView.cellForRow(at: indexPath) as! ReminderCell
-        
-        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
-        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
-        reminder.text = text
-        context.saveChanges()
-        tableView.reloadData()
+//        let indexPath = IndexPath(row: 0, section: 0)
+//        let cell = tableView.cellForRow(at: indexPath) as! ReminderCell
+//
+//        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
+//        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
+//        reminder.text = text
+//        context.saveChanges()
+//        tableView.reloadData()
+        performSegue(withIdentifier: "composeDetail", sender: self)
     }
     
     // Compose of a reminder with the add button inside the compose cell

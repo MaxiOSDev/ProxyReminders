@@ -8,16 +8,41 @@
 
 import UIKit
 import CoreData
+import CoreLocation
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    let manager = CLLocationManager()
+    let context = CoreDataStack().managedObjectContext
+    var regions = [CLRegion]()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+        
         return true
+    }
+    
+    func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
+        func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
+            
+            let content = UNMutableNotificationContent()
+            
+            let text = reminder.text
+            guard let identifier = reminder.identifier else { return }
+            
+            content.title = text
+            print("The text is here. It worked within App Delegate! \(text)")
+            content.sound = .default()
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
+            let center = UNUserNotificationCenter.current()
+            center.add(request) { (erorr) in
+            }
+        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -28,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+            print("Notification Requests count when entering the background the app: \(notificationRequests)")
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -41,6 +69,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+            print("Notification Requests count when terminating the app: \(notificationRequests)")
+        }
         self.saveContext()
     }
 
@@ -88,6 +119,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
 }
+
+extension AppDelegate: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Did enter region: \(region.identifier)")
+        regions.append(region)
+        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
+        do {
+            let reminders = try context.fetch(fetchRequest)
+            for proxyReminder in reminders {
+                for geoRegion in regions {
+                    print("Geo Region Identifiers: \(geoRegion.identifier)")
+                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+                    if let proxyIdentifier = proxyReminder.identifier {
+                        if proxyIdentifier == region.identifier {
+                            handleEvent(forRegion: region, reminder: proxyReminder)
+                        } else {
+                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Did exit region: \(region.identifier)")
+        
+        regions.append(region)
+        
+        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
+        do {
+            let reminders = try context.fetch(fetchRequest)
+            for proxyReminder in reminders {
+                for geoRegion in regions {
+                    print("Geo Region Identifiers: \(geoRegion.identifier)")
+                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+                    if let proxyIdentifier = proxyReminder.identifier {
+                        if proxyIdentifier == region.identifier {
+                            handleEvent(forRegion: region, reminder: proxyReminder)
+                        } else {
+                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
+                        }
+                    }
+                }
+            }
+        } catch {
+            print(error)
+        }
+
+    }
+}
+
+
+
+
+
 

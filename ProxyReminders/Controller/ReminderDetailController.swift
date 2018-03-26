@@ -37,7 +37,6 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     var geoRegion: CLCircularRegion?
     
     lazy var locationManager: LocationManager = {
- 
         return LocationManager(delegate: self, permissionDelegate: self, map: nil, geoAlertDelegate: self)
     }()
 
@@ -50,10 +49,15 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
         
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
-        print("Reminder \(reminder)") // So you can see the reminder properties in console
+        print("Reminder text \(reminder?.text)")
+        print("Reminder identifier: \(reminder?.identifier)")
+        print("Reminder latitude: \(reminder?.latitude)")
+        print("Reminder longitude: \(reminder?.longitude)")
+        print("Reminder location: \(reminder?.location)")
+        print("Reminder eventType: \(reminder?.eventType)")
         geoRegionDelegateC = notificationManager // Delegate for region, the implementation is in the notification manager.
         configureView()
-        
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,13 +75,37 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
                 oldReminder.latitude = latitude as NSNumber?
                 oldReminder.longitude = longitude as NSNumber?
                 oldReminder.radius = radius as NSNumber?
-                oldReminder.identifier = identifier
+                
+                if geoRegion?.identifier != nil {
+                    oldReminder.identifier = geoRegion?.identifier
+                } else {
+                    oldReminder.identifier = identifier
+                }
+
                 // But the reminder identifier is also the region identifer so that may not work out so well. We'll see.
                 oldReminder.eventType = eventType?.rawValue
                 oldReminder.location = location
                 // Location is basically the name so I can place it inside my location name label with string interpolation.
                 context?.saveChanges()
+                if geoRegion != nil {
+                    guard let geoRegion = geoRegion else {
+                        print("Geo Region is nil")
+                        return
+                    }
+                    
+                    if eventType == .onEntry {
+                        geoRegion.notifyOnExit = false
+                        geoRegion.notifyOnEntry = true
+                    } else {
+                        geoRegion.notifyOnExit = true
+                        geoRegion.notifyOnExit = false
+                    }
+                    
+                    locationManager.startMonitoring(region: geoRegion)
+                }
+
             }
+            
         } else {
             // New reminder when using the compose cell way.
             let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context!) as! Reminder
