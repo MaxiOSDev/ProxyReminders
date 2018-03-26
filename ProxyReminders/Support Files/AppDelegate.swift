@@ -17,32 +17,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let manager = CLLocationManager()
     let context = CoreDataStack().managedObjectContext
-    var regions = [CLRegion]()
+
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        manager.delegate = self
-        manager.requestAlwaysAuthorization()
-        
-        return true
-    }
-    
-    func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
-        func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
+
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            // proper handling here
             
-            let content = UNMutableNotificationContent()
-            
-            let text = reminder.text
-            guard let identifier = reminder.identifier else { return }
-            
-            content.title = text
-            print("The text is here. It worked within App Delegate! \(text)")
-            content.sound = .default()
-            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
-            let center = UNUserNotificationCenter.current()
-            center.add(request) { (erorr) in
-            }
         }
+        UNUserNotificationCenter.current().delegate = self
+
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -56,10 +42,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
             print("Notification Requests count when entering the background the app: \(notificationRequests)")
         }
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (notificationRequests) in
+            print("Notification Requests count when entering the foreground : \(notificationRequests)")
+        }
+
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -73,6 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Notification Requests count when terminating the app: \(notificationRequests)")
         }
         self.saveContext()
+
     }
 
     // MARK: - Core Data stack
@@ -121,54 +113,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Did enter region: \(region.identifier)")
-        regions.append(region)
-        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
-        do {
-            let reminders = try context.fetch(fetchRequest)
-            for proxyReminder in reminders {
-                for geoRegion in regions {
-                    print("Geo Region Identifiers: \(geoRegion.identifier)")
-                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
-                    if let proxyIdentifier = proxyReminder.identifier {
-                        if proxyIdentifier == region.identifier {
-                            handleEvent(forRegion: region, reminder: proxyReminder)
-                        } else {
-                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
-                        }
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
+extension AppDelegate: UNUserNotificationCenterDelegate {
+
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .sound])
     }
     
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Did exit region: \(region.identifier)")
-        
-        regions.append(region)
-        
-        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
-        do {
-            let reminders = try context.fetch(fetchRequest)
-            for proxyReminder in reminders {
-                for geoRegion in regions {
-                    print("Geo Region Identifiers: \(geoRegion.identifier)")
-                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
-                    if let proxyIdentifier = proxyReminder.identifier {
-                        if proxyIdentifier == region.identifier {
-                            handleEvent(forRegion: region, reminder: proxyReminder)
-                        } else {
-                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
-                        }
-                    }
-                }
-            }
-        } catch {
-            print(error)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        if response.actionIdentifier == UNNotificationDismissActionIdentifier {
+            
+        } else if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            UIApplication.shared.applicationIconBadgeNumber = 0
         }
 
     }

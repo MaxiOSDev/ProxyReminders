@@ -17,7 +17,7 @@ class RemindersListController: UITableViewController {
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     var context = CoreDataStack().managedObjectContext
-    
+
     // Lazily loaded FetchedResultsController
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: self.context, tableView: tableView)
@@ -31,9 +31,7 @@ class RemindersListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // As learnt in a blog
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-            // proper handling here
-        }
+
         UIApplication.shared.applicationIconBadgeNumber = 0 // Sets badge number back to 0
         let manager = CLLocationManager()
         print(manager.monitoredRegions.count)

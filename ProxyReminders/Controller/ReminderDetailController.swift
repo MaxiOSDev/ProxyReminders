@@ -87,22 +87,23 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
                 oldReminder.location = location
                 // Location is basically the name so I can place it inside my location name label with string interpolation.
                 context?.saveChanges()
-                if geoRegion != nil {
-                    guard let geoRegion = geoRegion else {
-                        print("Geo Region is nil")
-                        return
-                    }
-                    
-                    if eventType == .onEntry {
-                        geoRegion.notifyOnExit = false
-                        geoRegion.notifyOnEntry = true
-                    } else {
-                        geoRegion.notifyOnExit = true
-                        geoRegion.notifyOnExit = false
-                    }
-                    
-                    locationManager.startMonitoring(region: geoRegion)
-                }
+                
+//                if geoRegion != nil {
+//                    guard let geoRegion = geoRegion else {
+//                        print("Geo Region is nil")
+//                        return
+//                    }
+//
+//                    if eventType == .onEntry {
+//                        geoRegion.notifyOnExit = false
+//                        geoRegion.notifyOnEntry = true
+//                    } else {
+//                        geoRegion.notifyOnExit = true
+//                        geoRegion.notifyOnExit = false
+//                    }
+//
+//                    locationManager.startMonitoring(region: geoRegion)
+//                }
 
             }
             
@@ -124,19 +125,23 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             context?.saveChanges()
             geoRegionDelegateC?.monitorRegionB(geoRegion!) // This isn't really monitoring, it is passing the region around.
             // So it eventually reaches the notification controller. See, the region goes nil so I had to use 3 delegates. Cumbersome I know.
-            guard let geoRegion = geoRegion else {
-                print("Geo Region is a bust")
-                return }
-            if eventType == .onEntry {
-                geoRegion.notifyOnExit = false
-                geoRegion.notifyOnEntry = true
-
-            } else {
-                geoRegion.notifyOnExit = true
-                geoRegion.notifyOnEntry = false
-            }
+            guard let eventType = eventType else { return }
+            let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType)
+            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+//            guard let geoRegion = geoRegion else {
+//                print("Geo Region is a bust")
+//                return }
             
-            locationManager.startMonitoring(region: geoRegion)
+//            if eventType == .onEntry {
+//                geoRegion.notifyOnExit = false
+//                geoRegion.notifyOnEntry = true
+//
+//            } else {
+//                geoRegion.notifyOnExit = true
+//                geoRegion.notifyOnEntry = false
+//            }
+            
+         //   locationManager.startMonitoring(region: geoRegion)
             
         }
 

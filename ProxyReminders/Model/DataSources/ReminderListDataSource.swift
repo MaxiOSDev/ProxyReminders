@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 import CoreLocation
+import UserNotifications
 
 // My data source for reminders.
 class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
@@ -18,7 +19,7 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     var indexPathForSelectedRow: IndexPath?
     var delegate: SegueDelegate?
     let locationManager = CLLocationManager()
-    
+    var notificationCenter = UNUserNotificationCenter.current()
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: context, tableView: tableView)
     }()
@@ -78,9 +79,15 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let reminder = fetchedResultsController.object(at: indexPath)
-        if reminder.identifier != nil {
-            stopMonitoringLocation(for: reminder)
+//        if reminder.identifier != nil {
+//            stopMonitoringLocation(for: reminder)
+//        }
+        guard let identifier = reminder.identifier else { print("Didn't work")
+            return
         }
+        
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+        
         self.context.delete(reminder)
         self.context.saveChanges()
         
