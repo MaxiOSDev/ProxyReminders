@@ -84,7 +84,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/NotificationManager.swift"
-            timestampString = "543786060.031672"
+            timestampString = "543847844.866653"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "33"
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543786060.040332"
+            timestampString = "543847844.871425"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "257"
-            endingLineNumber = "257"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
             landmarkName = "handleEvent(forRegion:)"
             landmarkType = "7">
             <Locations>
@@ -116,11 +116,11 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543786062.584825"
+                  timestampString = "543847845.9943171"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "257"
-                  endingLineNumber = "257"
+                  startingLineNumber = "260"
+                  endingLineNumber = "260"
                   offsetFromSymbolStart = "1473">
                </Location>
                <Location
@@ -131,11 +131,11 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543786062.5913351"
+                  timestampString = "543847846.003484"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "258"
-                  endingLineNumber = "258"
+                  startingLineNumber = "261"
+                  endingLineNumber = "261"
                   offsetFromSymbolStart = "12">
                </Location>
             </Locations>
@@ -148,13 +148,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543786060.0412199"
+            timestampString = "543847844.874455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "250"
+            endingLineNumber = "250"
+            landmarkName = "handleEvent(forRegion:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -164,7 +164,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
-            timestampString = "543786060.042047"
+            timestampString = "543847844.875497"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "122"
@@ -180,7 +180,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
-            timestampString = "543786060.042917"
+            timestampString = "543847844.875742"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "177"
@@ -196,7 +196,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543786060.0434901"
+            timestampString = "543847844.876009"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "118"
@@ -212,7 +212,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543786060.04424"
+            timestampString = "543847844.876861"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "116"
@@ -228,7 +228,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Model/LocationGroup/LocationManager.swift"
-            timestampString = "543786060.045168"
+            timestampString = "543847844.87762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "183"
@@ -244,7 +244,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Controller/ReminderDetailController.swift"
-            timestampString = "543786060.045666"
+            timestampString = "543847844.8777601"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
@@ -260,7 +260,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Support Files/AppDelegate.swift"
-            timestampString = "543786060.0462641"
+            timestampString = "543847844.878528"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "120"
@@ -276,12 +276,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ProxyReminders/Support Files/AppDelegate.swift"
-            timestampString = "543786060.046896"
+            timestampString = "543847844.878718"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "127"
             endingLineNumber = "127"
             landmarkName = "userNotificationCenter(_:didReceive:withCompletionHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Model/DataSources/ReminderListDataSource.swift"
+            timestampString = "543847844.878943"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "tableView(_:commit:forRowAt:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Model/DataSources/ReminderListDataSource.swift"
+            timestampString = "543847844.879142"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "tableView(_:commit:forRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -88,6 +88,9 @@
                                                     <color key="value" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="isCompleted:" destination="Tqr-Wd-oIn" eventType="touchUpInside" id="Jda-El-iAa"/>
+                                            </connections>
                                         </button>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lcC-ie-5bD">
                                             <rect key="frame" x="306" y="0.0" width="69" height="99.5"/>

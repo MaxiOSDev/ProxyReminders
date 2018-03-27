@@ -82,16 +82,19 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
 //        if reminder.identifier != nil {
 //            stopMonitoringLocation(for: reminder)
 //        }
-        guard let identifier = reminder.identifier else { print("Didn't work")
-            return
+        
+        if let identifier = reminder.identifier {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+            self.context.delete(reminder)
+            self.context.saveChanges()
+        } else {
+            self.context.delete(reminder)
+            self.context.saveChanges()
         }
         
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
-        
-        self.context.delete(reminder)
-        self.context.saveChanges()
-        
     }
+    
+    
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .delete

@@ -58,14 +58,6 @@ class RemindersListController: UITableViewController {
     
     // The adding of a reminder with the bar button item
     @IBAction func addReminder(_ sender: UIBarButtonItem) {
-//        let indexPath = IndexPath(row: 0, section: 0)
-//        let cell = tableView.cellForRow(at: indexPath) as! ReminderCell
-//
-//        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
-//        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
-//        reminder.text = text
-//        context.saveChanges()
-//        tableView.reloadData()
         performSegue(withIdentifier: "composeDetail", sender: self)
     }
     
@@ -79,6 +71,11 @@ class RemindersListController: UITableViewController {
         reminder.text = text
         context.saveChanges()
         tableView.reloadData()
+    }
+    
+    @IBAction func isCompleted(_ sender: Any) {
+        let indexPath = IndexPath(row: 0, section: 0)
+        dataSource.tableView(tableView, commit: .delete, forRowAt: indexPath)
     }
     
     // Send data to next view controller

@@ -123,11 +123,14 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             reminder.radius = radius as? NSNumber
             reminder.eventType = eventType?.rawValue
             context?.saveChanges()
-            geoRegionDelegateC?.monitorRegionB(geoRegion!) // This isn't really monitoring, it is passing the region around.
+            if geoRegion != nil {
+                geoRegionDelegateC?.monitorRegionB(geoRegion!)
+                guard let eventType = eventType else { return }
+                let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType)
+                notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+            }
             // So it eventually reaches the notification controller. See, the region goes nil so I had to use 3 delegates. Cumbersome I know.
-            guard let eventType = eventType else { return }
-            let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType)
-            notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+
 //            guard let geoRegion = geoRegion else {
 //                print("Geo Region is a bust")
 //                return }

@@ -11,8 +11,6 @@ import UIKit
 class ReminderCell: UITableViewCell {
     
     @IBOutlet weak var reminderBubble: UIButtonX!
-    @IBOutlet weak var reminderNotesLabel: UILabel!
-    @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     weak var delegate: ReminderCellDelegate?
