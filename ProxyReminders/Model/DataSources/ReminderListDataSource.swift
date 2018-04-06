@@ -94,8 +94,6 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         
     }
     
-    
-    
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .delete
     }

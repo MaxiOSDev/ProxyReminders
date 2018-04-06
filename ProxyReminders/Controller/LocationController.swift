@@ -80,11 +80,24 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         requestLocationsPermissions()
         dataSource.savedLocation(for: reminder)
         locationManagerPassedB?.locationManager(locationManger)
+        segmentedControl.selectedSegmentIndex = 0
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setProximityDefault() {
+        //dataSource.circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.4)
+        // Basically send that data to the detail VC.
+        geoSaveDelegate?.dataSaved(latitude: latitude, longitude: longitude, eventType: .onEntry, radius: 50.00, location: location)
+        geoIdentifier?.saveIdentifier(identifier: identifier)
+        geoRegionDelegate?.monitorRegionB(geoRegion!)
+        locationManagerPassed?.locationManager(locationManger)
+        
+        // And a print statment to see that all worked out
+        print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
     }
     
     // The segmentedControl's IBAction. There is alot going on in here.
@@ -145,7 +158,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     // How I assign the data from the datasource to these properties which will be sent to the detial vc.
     func saveIdentifier(identifier: String?) {
         self.identifier = identifier
-
+        
     }
     
     func dataSaved(latitude: Double?, longitude: Double?, radius: Double?, location: String?) {
@@ -153,11 +166,13 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         self.longitude = longitude
         self.radius = radius
         self.location = location
+        setProximityDefault()
     }
     
     func monitorRegion(_ region: CLCircularRegion) {
         print("Region that was passed \(region)")
         self.geoRegion = region
+        
         print("The changed GeoRegion \(geoRegion)")
     }
 

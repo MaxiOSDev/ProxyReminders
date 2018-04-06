@@ -116,7 +116,7 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543847845.9943171"
+                  timestampString = "544744339.855492"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "260"
@@ -131,7 +131,7 @@
                   moduleName = "ProxyReminders"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/PersonalWorkAccount/Desktop/ProxyReminders/ProxyReminders/Controller/ReminderDetailController.swift"
-                  timestampString = "543847846.003484"
+                  timestampString = "544744339.8619961"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "261"
@@ -291,13 +291,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProxyReminders/Model/DataSources/ReminderListDataSource.swift"
-            timestampString = "543847844.878943"
+            filePath = "ProxyReminders/Controller/LocationController.swift"
+            timestampString = "544744339.603117"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "88"
-            endingLineNumber = "88"
-            landmarkName = "tableView(_:commit:forRowAt:)"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
+            landmarkName = "monitorRegion(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -307,13 +307,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "ProxyReminders/Model/DataSources/ReminderListDataSource.swift"
-            timestampString = "543847844.879142"
+            filePath = "ProxyReminders/Model/DataSources/LocationListDataSource.swift"
+            timestampString = "544744339.603768"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
-            landmarkName = "tableView(_:commit:forRowAt:)"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
+            landmarkName = "dropPinZoomIn(placemark:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Controller/LocationController.swift"
+            timestampString = "544744339.603851"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
+            landmarkName = "dataSaved(latitude:longitude:radius:location:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ProxyReminders/Controller/LocationController.swift"
+            timestampString = "544744339.604314"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "saveIdentifier(identifier:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
