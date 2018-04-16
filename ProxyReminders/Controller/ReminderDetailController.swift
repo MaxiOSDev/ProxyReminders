@@ -49,12 +49,12 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
         
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
-        print("Reminder text \(reminder?.text)")
-        print("Reminder identifier: \(reminder?.identifier)")
-        print("Reminder latitude: \(reminder?.latitude)")
-        print("Reminder longitude: \(reminder?.longitude)")
-        print("Reminder location: \(reminder?.location)")
-        print("Reminder eventType: \(reminder?.eventType)")
+//        print("Reminder text \(reminder?.text)")
+//        print("Reminder identifier: \(reminder?.identifier)")
+//        print("Reminder latitude: \(reminder?.latitude)")
+//        print("Reminder longitude: \(reminder?.longitude)")
+//        print("Reminder location: \(reminder?.location)")
+//        print("Reminder eventType: \(reminder?.eventType)")
         geoRegionDelegateC = notificationManager // Delegate for region, the implementation is in the notification manager.
         configureView()
 

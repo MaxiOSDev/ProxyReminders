@@ -41,9 +41,9 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
             let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let region = CLCircularRegion(center: center, radius: 50.00, identifier: regionIdentifier)
         
-        print("Region identifier inside the notification manager: \(region.identifier)")
+      //  print("Region identifier inside the notification manager: \(region.identifier)")
 
-        print("Reminder identifier in the notification manager: \(reminder.identifier)")
+      //  print("Reminder identifier in the notification manager: \(reminder.identifier)")
 
         // My idea was to switch if the region notifys by type. But it seems to not be working properly, both didEnter and didExit go off.
         switch type {

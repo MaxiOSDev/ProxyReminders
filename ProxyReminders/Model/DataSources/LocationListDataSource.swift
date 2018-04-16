@@ -204,7 +204,7 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
 
         if matchingItems.count > 0 {
             let item = matchingItems[indexPath.row].placemark
-            let coordinate = Coordinate(location: item.location!)
+      //      let coordinate = Coordinate(location: item.location!) never used.
      //       monitorDelegate?.startMonitoringCoordinates(coordinate) // I used to start monitoring when selecting a location, but not anymore.
             handleMapSearchDelegate?.dropPinZoomIn(placemark: item)
             geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location) // Send data back to detail VC.

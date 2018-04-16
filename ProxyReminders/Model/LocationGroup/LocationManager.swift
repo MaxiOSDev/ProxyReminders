@@ -149,14 +149,14 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         do {
             let reminders = try context.fetch(fetchRequest)
             for proxyReminder in reminders {
-                for geoRegion in regions {
-                    print("Geo Region Identifiers: \(geoRegion.identifier)")
-                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+                for _ in regions {
+                //    print("Geo Region Identifiers: \(geoRegion.identifier)")
+                //    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
                     if let proxyIdentifier = proxyReminder.identifier {
                         if proxyIdentifier == region.identifier {
                          //   handleEvent(forRegion: region, reminder: proxyReminder)
                         } else {
-                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
+                       //     print("Not these: \(proxyIdentifier) & \(region.identifier)")
                         }
                     }
                 }
@@ -177,7 +177,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             for proxyReminder in reminders {
                 for geoRegion in regions {
                     print("Geo Region Identifiers: \(geoRegion.identifier)")
-                    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
+              //      print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
                     if let proxyIdentifier = proxyReminder.identifier {
                         if proxyIdentifier == region.identifier {
                         //    handleEvent(forRegion: region, reminder: proxyReminder)
@@ -193,7 +193,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        print("Failed to monitor region: \(region), with error: \(error)")
+     //   print("Failed to monitor region: \(region), with error: \(error)")
     }
     
     func handleEvent(forRegion region: CLRegion, reminder: Reminder) {

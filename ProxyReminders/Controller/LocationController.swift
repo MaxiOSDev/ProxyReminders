@@ -97,7 +97,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
         locationManagerPassed?.locationManager(locationManger)
         
         // And a print statment to see that all worked out
-        print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
+       // print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
     }
     
     // The segmentedControl's IBAction. There is alot going on in here.
@@ -112,7 +112,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
             locationManagerPassed?.locationManager(locationManger)
             
             // And a print statment to see that all worked out
-            print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
+         //   print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
         } else {
             // Make the fill color clear, but the stroke color is the same.
             dataSource.circleRenderer.fillColor = UIColor.clear
@@ -122,7 +122,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
             geoRegionDelegate?.monitorRegionB(geoRegion!)
             locationManagerPassed?.locationManager(locationManger)
             
-            print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
+         //   print("In set proximity \(latitude) \(longitude) \(eventType?.rawValue) \(radius) \(location)")
         }
     }
     
@@ -141,17 +141,21 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     // The delegate methods. How I show my map and hide
     func showMap(for view: UIView) {
         print("Show map called")
-        containerConstraint.constant = 0
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+        if containerConstraint.constant != 0 {
+            containerConstraint.constant = 0
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     func hideMap() {
         print("Hide map called")
-        containerConstraint.constant = 274
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
+        if containerConstraint.constant != 274 {
+            containerConstraint.constant = 274
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
@@ -170,10 +174,10 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     }
     
     func monitorRegion(_ region: CLCircularRegion) {
-        print("Region that was passed \(region)")
+     //   print("Region that was passed \(region)")
         self.geoRegion = region
         
-        print("The changed GeoRegion \(geoRegion)")
+     //   print("The changed GeoRegion \(geoRegion)")
     }
 
 }
