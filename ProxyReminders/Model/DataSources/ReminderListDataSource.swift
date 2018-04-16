@@ -20,6 +20,8 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     var delegate: SegueDelegate?
     let locationManager = CLLocationManager()
     var notificationCenter = UNUserNotificationCenter.current()
+    
+    // Lazily loaded FRC
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: context, tableView: tableView)
     }()
@@ -31,9 +33,10 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     
     // Now since my setup with cells was a tad different I had to use a segue differently to get the proper indexpath
     func reminderSelectedRow() -> IndexPath {
-        return indexPathForSelectedRow! // This sometimes would crash. Need fix or fail gracefully
+        
+        return indexPathForSelectedRow!
     }
-    
+    // Getting object from fetchedResults controller at selected indexPath
     func object(at indexPath: IndexPath) -> Reminder {
         return fetchedResultsController.object(at: indexPath)
     }
@@ -79,9 +82,6 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let reminder = fetchedResultsController.object(at: indexPath)
-//        if reminder.identifier != nil {
-//            stopMonitoringLocation(for: reminder)
-//        }
         
         if let identifier = reminder.identifier {
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])

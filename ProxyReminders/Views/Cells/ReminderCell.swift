@@ -9,7 +9,7 @@
 import UIKit
 
 class ReminderCell: UITableViewCell {
-    
+    // Custom Cell 
     @IBOutlet weak var reminderBubble: UIButtonX!
     @IBOutlet weak var textView: UITextView!
     

@@ -18,9 +18,7 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
     var locationManager: LocationManager?
     
     func scheduleNewNotification(withReminder reminder: Reminder, locationTrigger trigger: UNLocationNotificationTrigger?) {
-        //  let text = reminder.text
-        //  print("Reminder Identifier \(reminder.identifier)")
-        //  guard let identifier = reminder.identifier else { return }
+
         // I would use the addLocationEvent method to make a UNLocationNotificationTrigger and then pass it through here.
         
         guard let notificationTrigger = trigger else { return }
@@ -40,12 +38,8 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
             guard let regionIdentifier = reminder.identifier else { return nil }
             let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let region = CLCircularRegion(center: center, radius: 50.00, identifier: regionIdentifier)
-        
-      //  print("Region identifier inside the notification manager: \(region.identifier)")
 
-      //  print("Reminder identifier in the notification manager: \(reminder.identifier)")
-
-        // My idea was to switch if the region notifys by type. But it seems to not be working properly, both didEnter and didExit go off.
+        // Switch on the Event Type, which is set when hitting "When I Arrive", or "When I leave" with the segmented control.
         switch type {
         case .onEntry:
             region.notifyOnExit = false
@@ -57,6 +51,7 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
 
         return UNLocationNotificationTrigger(region: region, repeats: true)
     }
+    
     // Some delegate methods.
     func monitorRegionB(_ region: CLCircularRegion) {
         self.geoRegion = region

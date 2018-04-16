@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 class ComposeCell: UITableViewCell {
-    
+    // Custom Cell
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var composeButton: UIButtonX!
     @IBOutlet weak var detailButton: UIButton!
@@ -29,6 +29,7 @@ class ComposeCell: UITableViewCell {
 }
 
 extension ComposeCell: UITextViewDelegate {
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             textView.resignFirstResponder()

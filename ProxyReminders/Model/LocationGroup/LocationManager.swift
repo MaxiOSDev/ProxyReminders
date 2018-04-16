@@ -96,7 +96,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func requestLocation() {
         manager.requestLocation()
     }
-    
+    // Did change authorization delegate method
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
             permissionDelegate?.authorizationSucceeded()
@@ -105,7 +105,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             permissionDelegate?.authorizationFailedWithStatus(status)
         }
     }
-    
+    // DidFail Delegate method
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         guard let error = error as? CLError else { locationManagerDelgate?.failedWithError(.unknownError)
             return }
@@ -142,6 +142,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 
     }
     
+    // This is all mainly the old implementation, DidEnter and DidExit Region, I am using a UNLocationNotificationTrigger now which is more efficient as I've found out first hand.
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Did enter region: \(region.identifier)")
         regions.append(region)

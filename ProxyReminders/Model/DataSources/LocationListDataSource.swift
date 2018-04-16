@@ -13,7 +13,8 @@ import MapKit
 
 // SO much happening here.
 class LocationListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
-    // Things that mean nothing but setup
+    
+    
     private let tableView: UITableView
     private let searchController: UISearchController
     var mapView: MKMapView? = nil
@@ -186,10 +187,9 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
         geoIdentifier?.saveIdentifier(identifier: identifier)
         let circleRegionCoordinate = CLLocationCoordinate2D(latitude: placemark.coordinate.latitude, longitude: placemark.coordinate.longitude)
         let circleRegion = CLCircularRegion(center: circleRegionCoordinate, radius: 50.00, identifier: identifier)
-        // Send the circle region?
-        // FIXME: - CircleRegionDelegate implementation
+       
         monitorRegion?.monitorRegion(circleRegion)
-        // I am sending the region, not actually starting monitoring
+        // I am sending the region
         self.mapView?.removeOverlays(mapView.overlays)
         let circle = MKCircle(center: circleRegionCoordinate, radius: circleRegion.radius)
         self.mapView?.add(circle) // The geofence
@@ -204,7 +204,6 @@ extension LocationListDataSource: HandleMapSearch, MKMapViewDelegate, UISearchRe
 
         if matchingItems.count > 0 {
             let item = matchingItems[indexPath.row].placemark
-      //      let coordinate = Coordinate(location: item.location!) never used.
      //       monitorDelegate?.startMonitoringCoordinates(coordinate) // I used to start monitoring when selecting a location, but not anymore.
             handleMapSearchDelegate?.dropPinZoomIn(placemark: item)
             geoSaveB?.dataSaved(latitude: item.coordinate.latitude, longitude: item.coordinate.longitude, radius: 50.00, location: location) // Send data back to detail VC.

@@ -9,7 +9,7 @@
 import UIKit
 
 class LocationCell: UITableViewCell {
-    
+    // Custom Cell
     @IBOutlet weak var locationIcon: UIImageView!
     @IBOutlet weak var locationNameLabel: UILabel!
     @IBOutlet weak var locationAddressLabel: UILabel!
