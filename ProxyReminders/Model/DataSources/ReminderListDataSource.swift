@@ -16,9 +16,8 @@ import UserNotifications
 class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelegate {
     let tableView: UITableView
     let context: NSManagedObjectContext
-    var indexPathForSelectedRow: IndexPath?
-    var delegate: SegueDelegate?
     let locationManager = CLLocationManager()
+    var indexPathForSelectedRow: IndexPath?
     var notificationCenter = UNUserNotificationCenter.current()
     
     // Lazily loaded FRC
@@ -31,95 +30,68 @@ class ReminderListDataSource: NSObject, UITableViewDataSource, UITableViewDelega
         self.context = context
     }
     
-    // Now since my setup with cells was a tad different I had to use a segue differently to get the proper indexpath
-    func reminderSelectedRow() -> IndexPath {
-        
-        return indexPathForSelectedRow!
-    }
     // Getting object from fetchedResults controller at selected indexPath
     func object(at indexPath: IndexPath) -> Reminder {
         return fetchedResultsController.object(at: indexPath)
     }
     
-    // I want my compose cell to always stay at the bottom like in the reminders app
+    func reminderSelectedRow() -> IndexPath {
+        return indexPathForSelectedRow!
+    }
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        if let sections = fetchedResultsController.sections {
-            return sections.count + 1
-        }
-        
-        return 2
+        return fetchedResultsController.sections?.count ?? 0
     }
     
     // The difficult part honestly. To make sure the proper rows were in section 0 or 1
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section == 0) && (fetchedResultsController.fetchedObjects?.isEmpty)! {
-            return 0
-        } else if (section == 1) {
-            return 1
-        } else if (section == 0) && !(fetchedResultsController.fetchedObjects!.isEmpty) {
-            guard let sections = fetchedResultsController.sections else { fatalError("No sections in fectched results controller") }
-            let sectionInfo = sections[0]
-            return sectionInfo.numberOfObjects // Here could be fetchedResultsController.fetchedObjects.count
-        } else {
-            return 0
-        }
+        guard let section = fetchedResultsController.sections?[section] else { return 0 }
+        
+        return section.numberOfObjects
     }
     
     // The reminder cell are the already saved reminders, the compose cell is like in the Reminders App, a reminder that is being created but not saved yet.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        
             let reminderCell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as! ReminderCell
             reminderCell.backgroundColor = .clear
             reminderCell.selectionStyle = .none
             return configureCell(reminderCell, at: indexPath)
-        } else {
-            let composeCell = tableView.dequeueReusableCell(withIdentifier: "ComposeCell", for: indexPath) as! ComposeCell
-            composeCell.backgroundColor = .clear
-            composeCell.selectionStyle = .none
-            return composeCell
-        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         let reminder = fetchedResultsController.object(at: indexPath)
         
         if let identifier = reminder.identifier {
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
+            
+            notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+                var identifiers: [String] = []
+                for notification: UNNotificationRequest in notificationRequests {
+                    if notification.identifier == identifier {
+                        identifiers.append(notification.identifier)
+                    }
+                    print("Notification identifer: \(notification.identifier), reminder identifier: \(identifier)")
+                }
+                self.notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
+            }
             self.context.delete(reminder)
             self.context.saveChanges()
         } else {
             self.context.delete(reminder)
             self.context.saveChanges()
         }
-        
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .delete
     }
     
-    // See, if I just save the reminder without any location it does get saved, thus this code does its job
-    func composeCellHelper() {
-        // So difficult when creating. But got it.
-        let indexPath = IndexPath(row: 0, section: 1)
-        print("IndexPath here \(indexPath)")
-        
-        let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
-        
-        print("Cell? \(cell)")
-        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
-        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
-        reminder.text = text
-        context.saveChanges()
-    }
-    
-    
-    // Make sure that reminder cell gets populated with remidners.
+    // Make sure that reminder cell gets populated with reminders.
     func configureCell(_ cell: ReminderCell, at indexPath: IndexPath) -> UITableViewCell {
         if let objects = fetchedResultsController.fetchedObjects {
             let reminder = objects[indexPath.row]
             cell.textView.text = reminder.text
-            indexPathForSelectedRow = indexPath
             cell.delegate = self
             return cell
         }
@@ -133,7 +105,6 @@ extension ReminderListDataSource: ReminderCellDelegate {
     func buttonCloseTapped(cell: ReminderCell) {
         let indexPath = self.tableView.indexPath(for: cell)
         indexPathForSelectedRow = indexPath
-        delegate?.callSegueFromCell(myData: self)
     }
     
     func stopMonitoringLocation(for reminder: Reminder) {

@@ -37,26 +37,33 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     var geoRegion: CLCircularRegion?
     
     lazy var locationManager: LocationManager = {
-        return LocationManager(delegate: self, permissionDelegate: self, map: nil, geoAlertDelegate: self)
+      //  return LocationManager(delegate: self, permissionDelegate: self, map: nil, geoAlertDelegate: self)
+        return LocationManager(delegate: self, permissionDelegate: self, map: nil, geoAlertDelegate: nil)
     }()
 
     // My notification manager
     var notificationManager = NotificationManager()
-    
+    var notificationCenter = UNUserNotificationCenter.current()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
-//        print("Reminder text \(reminder?.text)")
-//        print("Reminder identifier: \(reminder?.identifier)")
+        print("Reminder text \(reminder?.text)")
+        print("Reminder identifier: \(reminder?.identifier)")
+        
+
 //        print("Reminder latitude: \(reminder?.latitude)")
 //        print("Reminder longitude: \(reminder?.longitude)")
 //        print("Reminder location: \(reminder?.location)")
 //        print("Reminder eventType: \(reminder?.eventType)")
         geoRegionDelegateC = notificationManager // Delegate for region, the implementation is in the notification manager.
         configureView()
+        
+        if reminder?.identifier == nil {
+            locationSwitch.isOn = false
+        }
 
     }
 
@@ -76,35 +83,43 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
                 oldReminder.longitude = longitude as NSNumber?
                 oldReminder.radius = radius as NSNumber?
                 
+                
+                
                 if geoRegion?.identifier != nil {
-                    oldReminder.identifier = geoRegion?.identifier
+                    print("Before identifier changed: \(oldReminder.identifier)")
+                    notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+                        var identifiers: [String] = []
+                        for notification: UNNotificationRequest in notificationRequests {
+                            if notification.identifier == oldReminder.identifier! {
+                                identifiers.append(notification.identifier)
+                            }
+                            print("Notification identifier: \(notification.identifier), Reminder identifier: \(oldReminder.identifier)")
+                        }
+                        print("Identifiers here: \(identifiers)")
+                        self.notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
+                        oldReminder.identifier = self.geoRegion?.identifier
+                    }
+
+                    print("After identifier changed: \(oldReminder.identifier)")
                 } else {
-                    oldReminder.identifier = identifier
+                    oldReminder.identifier = nil
                 }
 
                 // But the reminder identifier is also the region identifer so that may not work out so well. We'll see.
                 oldReminder.eventType = eventType?.rawValue
                 oldReminder.location = location
                 // Location is basically the name so I can place it inside my location name label with string interpolation.
-                context?.saveChanges()
-                
-//                if geoRegion != nil {
-//                    guard let geoRegion = geoRegion else {
-//                        print("Geo Region is nil")
-//                        return
-//                    }
-//
-//                    if eventType == .onEntry {
-//                        geoRegion.notifyOnExit = false
-//                        geoRegion.notifyOnEntry = true
-//                    } else {
-//                        geoRegion.notifyOnExit = true
-//                        geoRegion.notifyOnExit = false
-//                    }
-//
-//                    locationManager.startMonitoring(region: geoRegion)
-//                }
+                context?.saveChanges() // Save those changes!
+                if geoRegion != nil {
+                    geoRegionDelegateC?.monitorRegionB(geoRegion!)
 
+                    let trigger = notificationManager.addLocationEvent(forReminder: oldReminder, forEvent: EventType(rawValue: oldReminder.eventType!)!)
+                    notificationManager.scheduleNewNotification(withReminder: oldReminder, locationTrigger: trigger)
+                    
+                    notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+                        print("All notifications requests here: \(notificationRequests)\n")
+                    }
+                }
             }
             
         } else {
@@ -117,38 +132,27 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
             } else {
                 reminder.identifier = identifier
             }
-            
+        
+            // I would set these to NSNumber because I was not able to create NSManaged properties of type Double or Float.
             reminder.latitude = latitude as? NSNumber
             reminder.longitude = longitude as? NSNumber
             reminder.radius = radius as? NSNumber
             reminder.eventType = eventType?.rawValue
-            context?.saveChanges()
+            context?.saveChanges() // Save those changes!
             if geoRegion != nil {
                 geoRegionDelegateC?.monitorRegionB(geoRegion!)
                 guard let eventType = eventType else { return }
                 let trigger = notificationManager.addLocationEvent(forReminder: reminder, forEvent: eventType)
                 notificationManager.scheduleNewNotification(withReminder: reminder, locationTrigger: trigger)
+                
+                notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+                    print("All notifications requests here: \(notificationRequests)\n")
+                }
             }
-            // So it eventually reaches the notification controller. See, the region goes nil so I had to use 3 delegates. Cumbersome I know.
-
-//            guard let geoRegion = geoRegion else {
-//                print("Geo Region is a bust")
-//                return }
-            
-//            if eventType == .onEntry {
-//                geoRegion.notifyOnExit = false
-//                geoRegion.notifyOnEntry = true
-//
-//            } else {
-//                geoRegion.notifyOnExit = true
-//                geoRegion.notifyOnEntry = false
-//            }
-            
-         //   locationManager.startMonitoring(region: geoRegion)
             
         }
 
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil) // Dismisses modally presented view when saved.
     }
 
     
@@ -199,6 +203,27 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     
     @IBAction func switchToggled(_ sender: UISwitch) {
         // I am going to do something like, clear location or monitored regions but for now all it does is reload the tablview
+        if sender.isOn {
+        } else {
+            if geoRegion != nil {
+                geoRegion = nil
+            }
+            
+            if reminder?.identifier != nil {
+                notificationCenter.getPendingNotificationRequests { (notificationRequests) in
+                    var identifiers: [String] = []
+                    for notification: UNNotificationRequest in notificationRequests {
+                        if notification.identifier == self.reminder?.identifier! {
+                            identifiers.append(notification.identifier)
+                        }
+                        print("Notification identifier: \(notification.identifier), Reminder identifier: \(self.reminder?.identifier)")
+                    }
+                    print("Identifiers here: \(identifiers)")
+                    self.notificationCenter.removePendingNotificationRequests(withIdentifiers: identifiers)
+                }
+            }
+        }
+        
         tableView.reloadData()
     }
     
@@ -220,7 +245,7 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
         return 44.0
     }
     
-    // Send that data
+    // Send that data :)
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showLocation" {
             let locationVC = segue.destination as! LocationController
@@ -243,23 +268,8 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     }
 }
 
-extension ReminderDetailController: LocationPermissionsDelegate, LocationManagerDelegate, GeoNotificationDelegate {
-    
-    func handleEvent(forRegion region: CLRegion) {
-        print("Called: \(region)")
-        let content = UNMutableNotificationContent()
-        guard let reminder = reminder else {
-            print("Didn't work out bud")
-            return }
-        let text = reminder.text
-        guard let identifier = reminder.identifier else { return }
-        content.title = text
-        content.sound = .default()
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
-        let center = UNUserNotificationCenter.current()
-        center.add(request) { (erorr) in
-        }
-    }
+extension ReminderDetailController: LocationPermissionsDelegate, LocationManagerDelegate {
+    // Delegate methods
     
     func authorizationSucceeded() {
         print("Authorized")

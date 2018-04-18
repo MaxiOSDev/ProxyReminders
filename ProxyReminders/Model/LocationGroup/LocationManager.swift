@@ -96,6 +96,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     func requestLocation() {
         manager.requestLocation()
     }
+    
     // Did change authorization delegate method
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedAlways {
@@ -105,6 +106,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             permissionDelegate?.authorizationFailedWithStatus(status)
         }
     }
+    
     // DidFail Delegate method
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         guard let error = error as? CLError else { locationManagerDelgate?.failedWithError(.unknownError)
@@ -132,87 +134,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 
         map?.showsUserLocation = true
     }
-    
-    func startMonitoring(region: CLRegion) {
-        manager.startMonitoring(for: region)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
-        print("Region Identifier here in didStart \(region.identifier)")
 
-    }
-    
-    // This is all mainly the old implementation, DidEnter and DidExit Region, I am using a UNLocationNotificationTrigger now which is more efficient as I've found out first hand.
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Did enter region: \(region.identifier)")
-        regions.append(region)
-        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
-        do {
-            let reminders = try context.fetch(fetchRequest)
-            for proxyReminder in reminders {
-                for _ in regions {
-                //    print("Geo Region Identifiers: \(geoRegion.identifier)")
-                //    print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
-                    if let proxyIdentifier = proxyReminder.identifier {
-                        if proxyIdentifier == region.identifier {
-                         //   handleEvent(forRegion: region, reminder: proxyReminder)
-                        } else {
-                       //     print("Not these: \(proxyIdentifier) & \(region.identifier)")
-                        }
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Did exit region: \(region.identifier)")
-        
-        regions.append(region)
-        
-        let fetchRequest: NSFetchRequest<Reminder> = Reminder.fetchRequest()
-        do {
-            let reminders = try context.fetch(fetchRequest)
-            for proxyReminder in reminders {
-                for geoRegion in regions {
-                    print("Geo Region Identifiers: \(geoRegion.identifier)")
-              //      print("Proxy Reminder: \(proxyReminder.text) \(proxyReminder.identifier)")
-                    if let proxyIdentifier = proxyReminder.identifier {
-                        if proxyIdentifier == region.identifier {
-                        //    handleEvent(forRegion: region, reminder: proxyReminder)
-                        } else {
-                            print("Not these: \(proxyIdentifier) & \(region.identifier)")
-                        }
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-     //   print("Failed to monitor region: \(region), with error: \(error)")
-    }
-    
-    func handleEvent(forRegion region: CLRegion, reminder: Reminder) {
-        
-        let content = UNMutableNotificationContent()
-
-        let text = reminder.text
-        guard let identifier = reminder.identifier else { return }
-
-        content.title = text
-        print("The text is here. It worked! \(text)")
-        content.sound = .default()
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
-        let center = UNUserNotificationCenter.current()
-        center.add(request) { (erorr) in
-        }
-    }
-    
 }
 
 extension LocationManager: PassReminderDelegate {
@@ -221,23 +143,6 @@ extension LocationManager: PassReminderDelegate {
     }
 }
 
-extension LocationController {
-    // How I used to make it work but both didEnter and didExit would make a notification. This function is unused
-    func showNotification(withTitle title: String, message: String) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.body = message
-        content.badge = 1
-        content.sound = .default()
-        let identifier = UUID().uuidString
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: nil)
-        
-        let center = UNUserNotificationCenter.current()
-        center.add(request) { (error) in
-            
-        }
-    }
-}
 
 
 

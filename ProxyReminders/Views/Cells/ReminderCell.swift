@@ -9,8 +9,7 @@
 import UIKit
 
 class ReminderCell: UITableViewCell {
-    // Custom Cell 
-    @IBOutlet weak var reminderBubble: UIButtonX!
+    // Custom Cell
     @IBOutlet weak var textView: UITextView!
     
     weak var delegate: ReminderCellDelegate?
@@ -30,5 +29,4 @@ class ReminderCell: UITableViewCell {
         delegate?.buttonCloseTapped(cell: self)
     }
     
-
 }

@@ -17,7 +17,7 @@ class RemindersListController: UITableViewController {
     @IBOutlet weak var addButton: UIBarButtonItem!
     
     var context = CoreDataStack().managedObjectContext
-
+    
     // Lazily loaded FetchedResultsController
     lazy var fetchedResultsController: ReminderFetchedResultsController = {
        return ReminderFetchedResultsController(managedObjectContext: self.context, tableView: tableView)
@@ -30,11 +30,11 @@ class RemindersListController: UITableViewController {
  
     override func viewDidLoad() {
         super.viewDidLoad()
-        // As learnt in a blog
 
         UIApplication.shared.applicationIconBadgeNumber = 0 // Sets badge number back to 0
         let manager = CLLocationManager()
         print(manager.monitoredRegions.count)
+        
         for identifier in manager.monitoredRegions {
             print(identifier.identifier)
         }
@@ -47,7 +47,7 @@ class RemindersListController: UITableViewController {
         tableView.dataSource = dataSource
         tableView.delegate = dataSource
         
-        dataSource.delegate = self
+       // dataSource.delegate = self
         tableView.reloadData()
     }
 
@@ -56,56 +56,31 @@ class RemindersListController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // The adding of a reminder with the bar button item
-    @IBAction func addReminder(_ sender: UIBarButtonItem) {
-        performSegue(withIdentifier: "composeDetail", sender: self)
-    }
-    
-    // Compose of a reminder with the add button inside the compose cell
-    @IBAction func composeReminder(_ sender: Any) {
-        let indexPath = IndexPath(row: 0, section: 1)
-        let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
-        
-        guard let text = cell.textView.text, !cell.textView.text.isEmpty else { return }
-        let reminder = NSEntityDescription.insertNewObject(forEntityName: "Reminder", into: context) as! Reminder
-        reminder.text = text
-        context.saveChanges()
-        tableView.reloadData()
-    }
-    
-    @IBAction func isCompleted(_ sender: Any) {
-        let indexPath = IndexPath(row: 0, section: 0)
-        dataSource.tableView(tableView, commit: .delete, forRowAt: indexPath)
+    @IBAction func segueAction(_ sender: UIButton) {
+        if dataSource.indexPathForSelectedRow != nil {
+            performSegue(withIdentifier: "showDetail", sender: self)
+        }
     }
     
     // Send data to next view controller
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
             if let navController = segue.destination as? UINavigationController {
-                let detailPage = navController.topViewController as! ReminderDetailController
+                
                 if segue.identifier == "showDetail" {
-                    let indexPath = dataSource.reminderSelectedRow()
+                    guard let detailPage = navController.topViewController as? ReminderDetailController else { return }
                     detailPage.context = self.context
+                    let indexPath = dataSource.reminderSelectedRow()
                     let reminder = self.dataSource.object(at: indexPath)
                     detailPage.reminder = reminder
-                    
-                } else if segue.identifier == "composeDetail" {
-                    let indexPath = IndexPath(row: 0, section: 1)
-                    let cell = tableView.cellForRow(at: indexPath) as! ComposeCell
+                } else if segue.identifier == "newReminder" {
+                    guard let detailPage = navController.topViewController as? ReminderDetailController else { return }
                     detailPage.context = self.context
-                    detailPage.textViewText = cell.textView.text
-            
                 }
-            }
+        }
     }
 }
 
-// Since I started over, I ran into lots of issues even as simple as using a segue, so got this from S.O.
-extension RemindersListController: SegueDelegate {
-    func callSegueFromCell(myData dataObject: AnyObject) {
-        self.performSegue(withIdentifier: "showDetail", sender: dataObject)
-    }
-}
 
 
 

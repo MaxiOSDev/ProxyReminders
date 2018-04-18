@@ -89,7 +89,7 @@ class LocationController: UIViewController, MapViewDelegate, GeoIdentifierA, Geo
     }
     
     func setProximityDefault() {
-        //dataSource.circleRenderer.fillColor = UIColor.blue.withAlphaComponent(0.4)
+        
         // Basically send that data to the detail VC.
         geoSaveDelegate?.dataSaved(latitude: latitude, longitude: longitude, eventType: .onEntry, radius: 50.00, location: location)
         geoIdentifier?.saveIdentifier(identifier: identifier)
