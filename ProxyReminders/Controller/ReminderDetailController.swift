@@ -46,23 +46,18 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     var notificationCenter = UNUserNotificationCenter.current()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+    
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0 , 0)
         tableView.tableFooterView = UIView(frame: .zero)
         print("Reminder text \(reminder?.text)")
         print("Reminder identifier: \(reminder?.identifier)")
-        
 
-//        print("Reminder latitude: \(reminder?.latitude)")
-//        print("Reminder longitude: \(reminder?.longitude)")
-//        print("Reminder location: \(reminder?.location)")
-//        print("Reminder eventType: \(reminder?.eventType)")
         geoRegionDelegateC = notificationManager // Delegate for region, the implementation is in the notification manager.
         configureView()
         
         if reminder?.identifier == nil {
             locationSwitch.isOn = false
+            locationNameLabel.text = ""
         }
 
     }
@@ -82,10 +77,9 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
                 oldReminder.latitude = latitude as NSNumber?
                 oldReminder.longitude = longitude as NSNumber?
                 oldReminder.radius = radius as NSNumber?
-                
-                
-                
+
                 if geoRegion?.identifier != nil {
+                    // Deletes old notifcaiton so a new one can be made in its place with reminders identifier being the same as the geo region and notification.
                     print("Before identifier changed: \(oldReminder.identifier)")
                     notificationCenter.getPendingNotificationRequests { (notificationRequests) in
                         var identifiers: [String] = []
@@ -202,13 +196,14 @@ class ReminderDetailController: UITableViewController, GeoSave, GeoIdentifierB, 
     }
     
     @IBAction func switchToggled(_ sender: UISwitch) {
-        // I am going to do something like, clear location or monitored regions but for now all it does is reload the tablview
+        
         if sender.isOn {
         } else {
+            // Check to see if geoRegion is nil, if not then make it nil because toggle is off.
             if geoRegion != nil {
                 geoRegion = nil
             }
-            
+            // If reminder identifier is not nil then remove that notification from existence if there is an existing notification.
             if reminder?.identifier != nil {
                 notificationCenter.getPendingNotificationRequests { (notificationRequests) in
                     var identifiers: [String] = []
