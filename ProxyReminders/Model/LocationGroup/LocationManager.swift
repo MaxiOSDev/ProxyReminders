@@ -69,7 +69,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         
         super.init()
         manager.delegate = self
-        
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.allowsBackgroundLocationUpdates = true
     }
     
     static var isAuthorized: Bool {
@@ -86,8 +87,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
             throw LocationError.disallowedByUser
         } else if authorizationStatus == .notDetermined {
             manager.requestAlwaysAuthorization()
-            manager.desiredAccuracy = kCLLocationAccuracyBest
-            manager.allowsBackgroundLocationUpdates = true
+
         } else {
             return
         }
@@ -131,10 +131,9 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         map?.setRegion(region, animated: true)
         
         locationManagerDelgate?.obtainedCoordinates(coordinate)
-
         map?.showsUserLocation = true
     }
-
+    
 }
 
 extension LocationManager: PassReminderDelegate {

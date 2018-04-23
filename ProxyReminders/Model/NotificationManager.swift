@@ -37,7 +37,7 @@ class NotificationManager: GeoRegionDelegateC, LocationManagerDelegatePassed {
             guard let longitude = reminder.longitude as? Double else { return nil }
             guard let regionIdentifier = reminder.identifier else { return nil }
             let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let region = CLCircularRegion(center: center, radius: 50.00, identifier: regionIdentifier)
+            let region = CLCircularRegion(center: center, radius: 50, identifier: regionIdentifier)
 
         // Switch on the Event Type, which is set when hitting "When I Arrive", or "When I leave" with the segmented control.
         switch type {
